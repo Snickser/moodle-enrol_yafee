@@ -25,8 +25,6 @@
 
 namespace enrol_yafee\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Sync enrolments task.
  *

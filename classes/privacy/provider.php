@@ -49,6 +49,12 @@ class provider implements \core_payment\privacy\consumer_provider, \core_privacy
         return 'privacy:metadata';
     }
 
+    /**
+     *
+     * @param string $paymentarea
+     * @param int $itemid
+     * @return  string
+     */
     public static function get_contextid_for_payment(string $paymentarea, int $itemid): ?int {
         global $DB;
 
@@ -66,6 +72,11 @@ class provider implements \core_payment\privacy\consumer_provider, \core_privacy
         return $contextid ?: null;
     }
 
+    /**
+     *
+     * @param userlist $userlist
+     * @return  string
+     */
     public static function get_users_in_context(userlist $userlist) {
         $context = $userlist->get_context();
 

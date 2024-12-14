@@ -24,8 +24,6 @@
 
 namespace enrol_yafee\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Send expiry notifications task.
  *
