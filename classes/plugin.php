@@ -151,7 +151,7 @@ class enrol_yafee_plugin extends enrol_plugin {
     /**
      * Add new instance of enrol plugin.
      * @param object $course
-     * @param array $fields instance fields
+     * @param ?array $fields instance fields
      * @return int id of new instance, null if can not be created
      */
     public function add_instance($course, ?array $fields = null) {
@@ -257,7 +257,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      *
      * @param restore_enrolments_structure_step $step
      * @param stdClass $data
-     * @param stdClass $course
+     * @param int $course
      * @param int $oldid
      */
     public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) {
