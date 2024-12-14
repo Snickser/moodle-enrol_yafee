@@ -81,21 +81,40 @@ class enrol_yafee_plugin extends enrol_plugin {
         return [];
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function roles_protected() {
         // Users with role assign cap may tweak the roles later.
         return false;
     }
 
+    /**
+     *
+     * @param stdClass $instance
+     * @return boolean
+     */
     public function allow_unenrol(stdClass $instance) {
         // Users with unenrol cap may unenrol other users manually - requires enrol/fee:unenrol.
         return true;
     }
 
+    /**
+     *
+     * @param stdClass $instance
+     * @return boolean
+     */
     public function allow_manage(stdClass $instance) {
         // Users with manage cap may tweak period and status - requires enrol/fee:manage.
         return true;
     }
 
+    /**
+     *
+     * @param stdClass $instance
+     * @return boolean
+     */
     public function show_enrolme_link(stdClass $instance) {
         return ($instance->status == ENROL_INSTANCE_ENABLED);
     }
@@ -112,7 +131,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             return false;
         }
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/fee:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) || !has_capability('enrol/fee:config', $context)) {
             return false;
         }
 
@@ -162,10 +181,10 @@ class enrol_yafee_plugin extends enrol_plugin {
     /**
      * Add new instance of enrol plugin.
      * @param object $course
-     * @param array $fields instance fields
+     * @param ?array $fields instance fields
      * @return int id of new instance, null if can not be created
      */
-    public function add_instance($course, array $fields = null) {
+    public function add_instance($course, ?array $fields = null) {
         if ($fields && !empty($fields['cost'])) {
             $fields['cost'] = unformat_float($fields['cost']);
         }
@@ -246,8 +265,6 @@ class enrol_yafee_plugin extends enrol_plugin {
             $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id]);
             if ($data->status) {
                 return ob_get_clean();
-            } else {
-            // Do repay.
             }
         }
 
@@ -309,7 +326,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'currency'   => $data->currency,
             ];
         }
-        if ($merge and $instances = $DB->get_records('enrol', $merge, 'id')) {
+        if ($merge && $instances = $DB->get_records('enrol', $merge, 'id')) {
             $instance = reset($instances);
             $instanceid = $instance->id;
         } else {
@@ -383,7 +400,7 @@ class enrol_yafee_plugin extends enrol_plugin {
     public function edit_instance_form($instance, MoodleQuickForm $mform, $context) {
 
         // Merge these two settings to one value for the single selection element.
-        if ($instance->notifyall and $instance->expirynotify) {
+        if ($instance->notifyall && $instance->expirynotify) {
             $instance->expirynotify = 2;
         }
         unset($instance->notifyall);
@@ -467,7 +484,7 @@ class enrol_yafee_plugin extends enrol_plugin {
     public function edit_instance_validation($data, $files, $instance, $context) {
         $errors = [];
 
-        if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {
+        if (!empty($data['enrolenddate']) && $data['enrolenddate'] < $data['enrolstartdate']) {
             $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_yafee');
         }
 
@@ -476,7 +493,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             $errors['cost'] = get_string('costerror', 'enrol_yafee');
         }
 
-        if ($data['expirynotify'] > 0 and $data['expirythreshold'] < 86400) {
+        if ($data['expirynotify'] > 0 && $data['expirythreshold'] < 86400) {
             $errors['expirythreshold'] = get_string('errorthresholdlow', 'core_enrol');
         }
 
