@@ -35,7 +35,6 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class send_expiry_notifications extends \core\task\scheduled_task {
-
     /**
      * Name for this task.
      *
@@ -53,5 +52,4 @@ class send_expiry_notifications extends \core\task\scheduled_task {
         $trace = new \text_progress_trace();
         $enrol->send_expiry_notifications($trace);
     }
-
 }

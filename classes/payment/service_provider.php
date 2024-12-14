@@ -32,7 +32,6 @@ namespace enrol_yafee\payment;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class service_provider implements \core_payment\local\callback\service_provider {
-
     /**
      * Callback function that returns the enrolment cost and the accountid
      * for the course that $instanceid enrolment instance belongs to.

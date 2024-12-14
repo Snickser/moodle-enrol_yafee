@@ -23,8 +23,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-    array(
+$tasks = [
+    [
         'classname' => '\enrol_yafee\task\sync_enrolments',
         'blocking' => 0,
         'minute' => '*/10',
@@ -32,9 +32,9 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-        'disabled' => 1
-    ),
-    array(
+        'disabled' => 1,
+    ],
+    [
         'classname' => '\enrol_yafee\task\send_expiry_notifications',
         'blocking' => 0,
         'minute' => '*/10',
@@ -42,7 +42,6 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-        'disabled' => 0
-    )
-);
-
+        'disabled' => 0,
+    ],
+];
