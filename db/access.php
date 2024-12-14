@@ -24,38 +24,38 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
+$capabilities = [
 
-    'enrol/yafee:config' => array(
+    'enrol/yafee:config' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        )
-    ),
+        ],
+    ],
 
-    'enrol/yafee:manage' => array(
+    'enrol/yafee:manage' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-        )
-    ),
+        ],
+    ],
 
-    'enrol/yafee:unenrol' => array(
+    'enrol/yafee:unenrol' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        )
-    ),
+        ],
+    ],
 
-    'enrol/yafee:unenrolself' => array(
+    'enrol/yafee:unenrolself' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-        )
-    ),
+        'archetypes' => [
+        ],
+    ],
 
-);
+];
