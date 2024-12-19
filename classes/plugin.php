@@ -21,6 +21,7 @@
  *
  * @package    enrol_yafee
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
+ * @copyright based on work by 2019 Shamim Rezaie <shamim@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,6 +29,7 @@
  * Fee enrolment plugin implementation.
  *
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
+ * @copyright based on work by 2019 Shamim Rezaie <shamim@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class enrol_yafee_plugin extends enrol_plugin {
