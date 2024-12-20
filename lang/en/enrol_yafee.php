@@ -54,7 +54,7 @@ $string['sendpaymentbutton'] = 'Select payment type';
 $string['status'] = 'Allow enrolment on payment enrolments';
 $string['status_desc'] = 'Allow users to make a payment to enrol into a course by default.';
 $string['syncenrolmentstask'] = 'Synchronise fee enrolments task';
-$string['sendexpirynotificationstask'] = "Fee enrolment send expiry notifications task";
+$string['sendexpirynotificationstask'] = 'Fee enrolment send expiry notifications task';
 $string['expirymessageenrollersubject'] = 'Fee enrolment expiry notification';
 $string['expirymessageenrollerbody'] = 'Fee enrolment in the course \'{$a->course}\' will expire within the next {$a->threshold} for the following users:
 
@@ -70,3 +70,4 @@ If you need help, please contact {$a->enroller}.';
 $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
+$string['extremovedsuspendnoroles']='Suspend course enrolment and remove roles';
