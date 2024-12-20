@@ -127,4 +127,4 @@ $string['welcometocoursetext'] = 'Добро пожаловать в курс «
 
   {$a->profileurl}';
 
-$string['extremovedsuspendnoroles']='Приостановить участие в курсе и удалить роли';
+$string['extremovedsuspendnoroles'] = 'Приостановить участие в курсе и удалить роли';

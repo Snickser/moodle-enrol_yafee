@@ -70,4 +70,4 @@ If you need help, please contact {$a->enroller}.';
 $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
-$string['extremovedsuspendnoroles']='Suspend course enrolment and remove roles';
+$string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles';
