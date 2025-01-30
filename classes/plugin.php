@@ -525,7 +525,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 (!$data['customint1'] ||
                     !array_key_exists($data['customint1'], \core_payment\helper::get_payment_accounts_menu($context)))
         ) {
-            $errors['status'] = 'Enrolments can not be enabled without specifying the payment account';
+            $errors['status'] = get_string('validationerror', 'enrol_yafee');
         }
 
         return $errors;

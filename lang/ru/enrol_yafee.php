@@ -128,3 +128,4 @@ $string['welcometocoursetext'] = 'Добро пожаловать в курс «
   {$a->profileurl}';
 
 $string['extremovedsuspendnoroles'] = 'Приостановить участие в курсе и удалить роли';
+$string['validationerror'] = 'Регистрация не может быть включена без указания платежного счета';
