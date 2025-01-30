@@ -71,3 +71,4 @@ $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
 $string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles';
+$string['validationerror'] = 'Enrolments can not be enabled without specifying the payment account';
