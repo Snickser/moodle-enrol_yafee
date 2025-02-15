@@ -522,6 +522,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             get_string('showduration', 'enrol_yafee')
         );
         $mform->setType('customint8', PARAM_INT);
+        $mform->DisabledIf('customint8', 'customchar1', "eq", 'no');
 
         $options = $this->get_expirynotify_options();
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
