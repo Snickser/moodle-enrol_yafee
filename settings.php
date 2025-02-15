@@ -109,8 +109,8 @@ if ($ADMIN->fulltree) {
         'enrol_yafee/enrolperiod',
         get_string('enrolperiod', 'enrol_yafee'),
         get_string('enrolperiod_desc', 'enrol_yafee'),
-        3600,
-        3600
+        0,
+        0
     ));
 
     $options = [0 => get_string('no'),

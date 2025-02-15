@@ -223,6 +223,23 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (!$data->expirynotify) {
             $data->expirythreshold = $instance->expirythreshold;
         }
+        // Make month and year periods.
+        switch ($data->customchar1) {
+            case 'min':
+                $data->enrolperiod = 60 * $data->customint7;
+                break;
+            case 'hour':
+                $data->enrolperiod = 3600 * $data->customint7;
+                break;
+            case 'day':
+                $data->enrolperiod = 86400 * $data->customint7;
+                break;
+            case 'week':
+                $data->enrolperiod = 86400 * 7 * $data->customint7;
+                break;
+            default:
+                $data->enrolperiod = 0;
+        }
         return parent::update_instance($instance, $data);
     }
 
@@ -442,10 +459,32 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_yafee'), $roles);
         $mform->setDefault('roleid', $this->get_config('roleid'));
 
-        $options = ['optional' => true, 'defaultunit' => 86400];
-        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_yafee'), $options);
-        $mform->setDefault('enrolperiod', $this->get_config('enrolperiod'));
-        $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_yafee');
+        $options = [
+         'no' => get_string('disable', 'moodle'),
+         'year' => get_string('years', 'moodle'),
+         'month' => get_string('months', 'moodle'),
+         'week' => get_string('weeks', 'moodle'),
+         'day' => get_string('days', 'moodle'),
+         'hour' => get_string('hours', 'moodle'),
+         'min' => get_string('mins', 'moodle'),
+        ];
+        $buttonarray = [];
+        $buttonarray[] =& $mform->createElement(
+            'text',
+            'customint7',
+            '',
+            ['size' => '3']
+        );
+        $mform->setType('customint7', PARAM_INT);
+        $buttonarray[] =& $mform->createElement(
+            'select',
+            'customchar1',
+            '',
+            $options,
+        );
+        $mform->addGroup($buttonarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
+        $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
+        $mform->DisabledIf('duration', 'customchar1', "eq", 'no');
 
         $options = $this->get_expirynotify_options();
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
@@ -509,9 +548,10 @@ class enrol_yafee_plugin extends enrol_plugin {
             'currency' => $validcurrency,
             'roleid' => $validroles,
             'expirynotify' => $validexpirynotify,
-            'enrolperiod' => PARAM_INT,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint7' => PARAM_INT,
+            'customchar1' => PARAM_TEXT,
         ];
         if ($data['expirynotify'] != 0) {
             $tovalidate['expirythreshold'] = PARAM_INT;
