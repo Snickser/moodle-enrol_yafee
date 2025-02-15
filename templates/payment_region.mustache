@@ -42,7 +42,9 @@
         "instanceid": 11,
         "description": "Enrolment in course Introduction to algorithms",
         "successurl": "https://moodlesite/course/view.php?id=2",
-        "isguestuser": false
+        "isguestuser": false,
+        "enrolperiod": "7",
+        "enrolperiod_desc": "day"
     }
 
 }}
@@ -56,7 +58,12 @@
     {{/isguestuser}}
     {{^isguestuser}}
         <p>{{# str }} paymentrequired {{/ str}}</p>
-        <p><b>{{cost}}</b></p>
+        <h4>{{cost}}</h4>
+
+{{#enrolperiod}}
+<h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
+{{/enrolperiod}}
+
         <button
             class="btn btn-secondary"
             type="button"

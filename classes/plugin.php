@@ -295,6 +295,34 @@ class enrol_yafee_plugin extends enrol_plugin {
             return ob_get_clean();
         }
 
+        // Show enrolperiod.
+        $enrolperiod = 0;
+        $enrolperioddesc = '';
+        if ($instance->customint8) {
+            $enrolperiod = $instance->enrolperiod;
+            if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
+                $enrolperiod = $instance->customint7;
+                $enrolperioddesc = get_string('months');
+            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
+                $enrolperiod = $instance->customint7;
+                $enrolperioddesc = get_string('years');
+            } else if ($enrolperiod > 0) {
+                if ($enrolperiod >= 86400 * 7) {
+                    $enrolperioddesc = get_string('weeks');
+                    $enrolperiod = round($enrolperiod / (86400 * 7));
+                } else if ($enrolperiod >= 86400) {
+                    $enrolperioddesc = get_string('days');
+                    $enrolperiod = round($enrolperiod / 86400);
+                } else if ($enrolperiod >= 3600) {
+                    $enrolperioddesc = get_string('hours');
+                    $enrolperiod = round($enrolperiod / 3600);
+                } else if ($enrolperiod >= 60) {
+                    $enrolperioddesc = get_string('minutes');
+                    $enrolperiod = round($enrolperiod / 60);
+                }
+            }
+        }
+
         $course = $DB->get_record('course', ['id' => $instance->courseid]);
         $context = context_course::instance($course->id);
 
@@ -317,6 +345,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                     format_string($course->fullname, true, ['context' => $context])
                 ),
                 'successurl' => \enrol_yafee\payment\service_provider::get_success_url('fee', $instance->id)->out(false),
+                'enrolperiod' => $enrolperiod,
+                'enrolperiod_desc' => $enrolperioddesc,
             ];
             echo $OUTPUT->render_from_template('enrol_yafee/payment_region', $data);
         }
@@ -485,6 +515,13 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addGroup($buttonarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'customchar1', "eq", 'no');
+
+        $mform->addElement(
+            'advcheckbox',
+            'customint8',
+            get_string('showduration', 'enrol_yafee')
+        );
+        $mform->setType('customint8', PARAM_INT);
 
         $options = $this->get_expirynotify_options();
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
