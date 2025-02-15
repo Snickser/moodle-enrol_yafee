@@ -13,6 +13,7 @@ This plugin contains the following features on top of the core payment plugin:
 - Course payment is available for suspended students
 - Notifications can be triggered about the expiration of the training period and re-payment
 - Extended enrolment duration, calendar month and calendar year
+- Show enrolment duration on page
 
 By enabling the appropriate settings, you can limit the time of paid registration of students for the course. After the set time, access to the course is suspended and can be resumed by re-payment. Course payment is available for suspended students, unlike other plugins.
 
