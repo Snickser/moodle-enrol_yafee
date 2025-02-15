@@ -84,6 +84,12 @@ class service_provider implements \core_payment\local\callback\service_provider 
         if ($instance->enrolperiod) {
             $timestart = time();
             $timeend   = $timestart + $instance->enrolperiod;
+        } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
+            $timestart = time();
+            $timeend   = strtotime('+' . $instance->customint7 . 'month 1min');
+        } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
+            $timestart = time();
+            $timeend   = strtotime('+' . $instance->customint7 . 'year 1min');
         } else {
             $timestart = 0;
             $timeend   = 0;
