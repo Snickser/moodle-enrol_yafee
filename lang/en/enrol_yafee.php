@@ -73,3 +73,7 @@ $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifica
 $string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles';
 $string['validationerror'] = 'Enrolments can not be enabled without specifying the payment account';
 $string['showduration'] = 'Show duration of training';
+$string['freetrial'] = 'Free trial of training';
+$string['freetrial_help'] = 'Allows you to open a course once for a specified period of time without payment.';
+$string['freetrialdesc'] = 'You have a trial period to enrol';
+$string['freetrialbutton'] = 'Trial enrol';

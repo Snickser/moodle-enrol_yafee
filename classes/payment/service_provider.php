@@ -81,7 +81,13 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $plugin = enrol_get_plugin('yafee');
 
-        if ($instance->enrolperiod) {
+        if (
+            !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
+            $instance->customint6
+        ) {
+            $timestart = time();
+            $timeend   = $timestart + $instance->customint6 + 60;
+        } else if ($instance->enrolperiod) {
             $timestart = time();
             $timeend   = $timestart + $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
@@ -101,6 +107,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $data->paymentid = $paymentid;
         $data->courseid = $instance->courseid;
         $data->timecreated = time();
+        $data->userid = $userid;
         $DB->insert_record('enrol_yafee', $data);
 
         return true;

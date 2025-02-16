@@ -170,12 +170,6 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
-        $fields['customint1']      = $this->get_config('groupkey');
-        $fields['customint2']      = $this->get_config('longtimenosee');
-        $fields['customint3']      = $this->get_config('maxenrolled');
-        $fields['customint4']      = $this->get_config('sendcoursewelcomemessage');
-        $fields['customint5']      = 0;
-        $fields['customint6']      = $this->get_config('newenrols');
 
         return $fields;
     }
@@ -298,12 +292,23 @@ class enrol_yafee_plugin extends enrol_plugin {
         // Show enrolperiod.
         $enrolperiod = 0;
         $enrolperioddesc = '';
-        if ($instance->customint8) {
-            $enrolperiod = $instance->enrolperiod;
-            if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
+        $freetrial = false;
+        if ($instance->customint8 || $instance->customint6) {
+            if ($instance->customint6) {
+                if (
+                    !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
+                    'userid' => $USER->id])
+                ) {
+                    $enrolperiod = $instance->customint6;
+                    $freetrial = true;
+                }
+            } else {
+                $enrolperiod = $instance->enrolperiod;
+            }
+            if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
-            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
+            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0 && !$freetrial) {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
@@ -347,6 +352,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'successurl' => \enrol_yafee\payment\service_provider::get_success_url('fee', $instance->id)->out(false),
                 'enrolperiod' => $enrolperiod,
                 'enrolperiod_desc' => $enrolperioddesc,
+                'freetrial' => $freetrial,
+                'sesskey' => sesskey(),
             ];
             echo $OUTPUT->render_from_template('enrol_yafee/payment_region', $data);
         }
@@ -489,6 +496,17 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_yafee'), $roles);
         $mform->setDefault('roleid', $this->get_config('roleid'));
 
+        $mform->addElement('duration', 'customint6', get_string('freetrial', 'enrol_yafee'), ['optional' => true]);
+        $mform->addHelpButton('customint6', 'freetrial', 'enrol_yafee');
+
+        $buttonarray = [];
+        $buttonarray[] =& $mform->createElement(
+            'text',
+            'customint7',
+            '',
+            ['size' => '3']
+        );
+        $mform->setType('customint7', PARAM_INT);
         $options = [
          'no' => get_string('disable', 'moodle'),
          'year' => get_string('years', 'moodle'),
@@ -498,14 +516,6 @@ class enrol_yafee_plugin extends enrol_plugin {
          'hour' => get_string('hours', 'moodle'),
          'min' => get_string('mins', 'moodle'),
         ];
-        $buttonarray = [];
-        $buttonarray[] =& $mform->createElement(
-            'text',
-            'customint7',
-            '',
-            ['size' => '3']
-        );
-        $mform->setType('customint7', PARAM_INT);
         $buttonarray[] =& $mform->createElement(
             'select',
             'customchar1',
@@ -523,6 +533,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         );
         $mform->setType('customint8', PARAM_INT);
         $mform->DisabledIf('customint8', 'customchar1', "eq", 'no');
+
 
         $options = $this->get_expirynotify_options();
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
@@ -589,6 +600,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
             'customint7' => PARAM_INT,
+            'customint8' => PARAM_INT,
             'customchar1' => PARAM_TEXT,
         ];
         if ($data['expirynotify'] != 0) {
