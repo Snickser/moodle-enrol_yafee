@@ -131,6 +131,6 @@ $string['extremovedsuspendnoroles'] = 'Приостановить участие
 $string['validationerror'] = 'Регистрация не может быть включена без указания платежного счета';
 $string['showduration'] = 'Показывать длительность обучения на странице';
 $string['freetrial'] = 'Free trial of training';
-$string['freetrial_help'] = 'Allows you to open a course once for a specified period of time without payment.';
+$string['freetrial_help'] = 'Позволяет открыть курс один раз на определенный период времени без оплаты.';
 $string['freetrialdesc'] = 'Доступно ознакомительное время';
 $string['freetrialbutton'] = 'Войти';
