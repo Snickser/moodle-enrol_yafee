@@ -56,7 +56,7 @@ function xmldb_enrol_yafee_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2025021602) {
+    if ($oldversion < 2025021605) {
         $table = new xmldb_table('enrol_yafee');
         $field = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'courseid');
         if (!$dbman->field_exists($table, $field)) {
@@ -64,7 +64,7 @@ function xmldb_enrol_yafee_upgrade($oldversion) {
         }
 
         // Savepoint reached.
-        upgrade_plugin_savepoint(true, 2025021602, 'enrol', 'yafee');
+        upgrade_plugin_savepoint(true, 2025021605, 'enrol', 'yafee');
     }
 
     return true;
