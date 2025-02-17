@@ -40,18 +40,17 @@ $PAGE->set_context(context_system::instance());
 
 $instanceid = required_param('instanceid', PARAM_INT);
 
-$userid = $USER->id;
-
 $url = \enrol_yafee\payment\service_provider::get_success_url('yafee', $instanceid);
+
+$userid = $USER->id;
+$component   = 'enrol_yafee';
+$paymentarea = 'fee';
 
 // Check.
 $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
 if ($DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid])) {
     redirect($url);
 }
-
-$component   = 'enrol_yafee';
-$paymentarea = 'fee';
 
 $payable = helper::get_payable($component, $paymentarea, $instanceid);
 
