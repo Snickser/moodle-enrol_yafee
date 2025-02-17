@@ -553,6 +553,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->setDefault('enrolenddate', 0);
         $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_yafee');
 
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('enrol_yafee');
+        $donate = get_string('donate', 'enrol_yafee', $plugininfo);
+        $mform->addElement('html', $donate);
+
         if (enrol_accessing_via_instance($instance)) {
             $warningtext = get_string('instanceeditselfwarningtext', 'core_enrol');
             $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), $warningtext);
