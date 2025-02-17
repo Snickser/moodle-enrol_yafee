@@ -64,7 +64,7 @@
 
 {{#freetrial}}
 <h4>{{# str }} freetrialdesc, enrol_yafee {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
-<form id="freetrial-select" action="{{config.wwwroot}}/enrol/yafee/trial.php" class="freetrial-form" method="GET">
+<form id="freetrial-select" action="{{config.wwwroot}}/enrol/yafee/trial.php" class="freetrial-form" method="POST">
 <button type="submit" id="freetrial" name="freetrial" value="1" class="btn btn-secondary btn-enrol_yafee-freetrial">{{# str }} freetrialbutton, enrol_yafee {{/ str }}</button>
 <input type="hidden" class="hidden-inputs" id="instanceid" name="instanceid" value="{{instanceid}}">
 <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
