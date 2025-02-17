@@ -44,7 +44,9 @@
         "successurl": "https://moodlesite/course/view.php?id=2",
         "isguestuser": false,
         "enrolperiod": "7",
-        "enrolperiod_desc": "day"
+        "enrolperiod_desc": "day",
+        "freetrial": true,
+        "sesskey": 234587628
     }
 
 }}
@@ -60,9 +62,19 @@
         <p>{{# str }} paymentrequired {{/ str}}</p>
         <h4>{{cost}}</h4>
 
-{{#enrolperiod}}
-<h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
-{{/enrolperiod}}
+{{#freetrial}}
+<h4>{{# str }} freetrialdesc, enrol_yafee {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
+<form id="freetrial-select" action="{{config.wwwroot}}/enrol/yafee/trial.php" class="freetrial-form" method="POST">
+<button type="submit" id="freetrial" name="freetrial" value="1" class="btn btn-secondary btn-enrol_yafee-freetrial">{{# str }} freetrialbutton, enrol_yafee {{/ str }}</button>
+<input type="hidden" class="hidden-inputs" id="instanceid" name="instanceid" value="{{instanceid}}">
+<input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
+</form>
+{{/freetrial}}
+
+{{^freetrial}}
+ {{#enrolperiod}}
+ <h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
+ {{/enrolperiod}}
 
         <button
             class="btn btn-secondary"
@@ -78,10 +90,20 @@
         >
             {{# str }} sendpaymentbutton, enrol_yafee {{/ str }}
         </button>
+{{/freetrial}}
+
+
+
+
+
     {{/isguestuser}}
+
+
 </div>
+
 {{#js}}
     require(['core_payment/gateways_modal'], function(modal) {
         modal.init();
     });
 {{/js}}
+

@@ -170,12 +170,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
-        $fields['customint1']      = $this->get_config('groupkey');
-        $fields['customint2']      = $this->get_config('longtimenosee');
-        $fields['customint3']      = $this->get_config('maxenrolled');
-        $fields['customint4']      = $this->get_config('sendcoursewelcomemessage');
-        $fields['customint5']      = 0;
-        $fields['customint6']      = $this->get_config('newenrols');
+        $fields['customint6']      = 0;
+        $fields['customint7']      = 0;
+        $fields['customint8']      = 0;
+        $fields['customchar1']     = 'minute';
 
         return $fields;
     }
@@ -223,9 +221,13 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (!$data->expirynotify) {
             $data->expirythreshold = $instance->expirythreshold;
         }
-        // Make month and year periods.
+        // Check trial.
+        if (!$data->trialenabled) {
+            $data->customint7 = 0;
+        }
+        // Make standard periods.
         switch ($data->customchar1) {
-            case 'min':
+            case 'minute':
                 $data->enrolperiod = 60 * $data->customint7;
                 break;
             case 'hour':
@@ -298,12 +300,23 @@ class enrol_yafee_plugin extends enrol_plugin {
         // Show enrolperiod.
         $enrolperiod = 0;
         $enrolperioddesc = '';
-        if ($instance->customint8) {
-            $enrolperiod = $instance->enrolperiod;
-            if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
+        $freetrial = false;
+        if ($instance->customint8 || $instance->customint6) {
+            if ($instance->customint6) {
+                if (
+                    !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
+                    'userid' => $USER->id])
+                ) {
+                    $enrolperiod = $instance->customint6;
+                    $freetrial = true;
+                }
+            } else {
+                $enrolperiod = $instance->enrolperiod;
+            }
+            if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
-            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
+            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0 && !$freetrial) {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
@@ -347,6 +360,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'successurl' => \enrol_yafee\payment\service_provider::get_success_url('fee', $instance->id)->out(false),
                 'enrolperiod' => $enrolperiod,
                 'enrolperiod_desc' => $enrolperioddesc,
+                'freetrial' => $freetrial,
+                'sesskey' => sesskey(),
             ];
             echo $OUTPUT->render_from_template('enrol_yafee/payment_region', $data);
         }
@@ -489,32 +504,38 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_yafee'), $roles);
         $mform->setDefault('roleid', $this->get_config('roleid'));
 
-        $options = [
-         'no' => get_string('disable', 'moodle'),
-         'year' => get_string('years', 'moodle'),
-         'month' => get_string('months', 'moodle'),
-         'week' => get_string('weeks', 'moodle'),
-         'day' => get_string('days', 'moodle'),
-         'hour' => get_string('hours', 'moodle'),
-         'min' => get_string('mins', 'moodle'),
-        ];
-        $buttonarray = [];
-        $buttonarray[] =& $mform->createElement(
+        $mform->addElement('duration', 'customint6', get_string('freetrial', 'enrol_yafee'), ['optional' => true]);
+        $mform->addHelpButton('customint6', 'freetrial', 'enrol_yafee');
+
+        $trialarray = [];
+        $trialarray[] =& $mform->createElement(
             'text',
             'customint7',
             '',
             ['size' => '3']
         );
         $mform->setType('customint7', PARAM_INT);
-        $buttonarray[] =& $mform->createElement(
+        $options = [
+         'year' => get_string('years', 'moodle'),
+         'month' => get_string('months', 'moodle'),
+         'week' => get_string('weeks', 'moodle'),
+         'day' => get_string('days', 'moodle'),
+         'hour' => get_string('hours', 'moodle'),
+         'minute' => get_string('mins', 'moodle'),
+        ];
+        $trialarray[] =& $mform->createElement(
             'select',
             'customchar1',
             '',
             $options,
         );
-        $mform->addGroup($buttonarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
+        $trialarray[] =& $mform->createElement('advcheckbox', 'trialenabled', '', get_string('enable'));
+        if ($instance->customint7) {
+            $mform->setDefault('trialenabled', 1);
+        }
+        $mform->addGroup($trialarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
-        $mform->DisabledIf('duration', 'customchar1', "eq", 'no');
+        $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
         $mform->addElement(
             'advcheckbox',
@@ -541,6 +562,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_yafee'), $options);
         $mform->setDefault('enrolenddate', 0);
         $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_yafee');
+
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('enrol_yafee');
+        $donate = get_string('donate', 'enrol_yafee', $plugininfo);
+        $mform->addElement('html', $donate);
 
         if (enrol_accessing_via_instance($instance)) {
             $warningtext = get_string('instanceeditselfwarningtext', 'core_enrol');
@@ -587,7 +612,9 @@ class enrol_yafee_plugin extends enrol_plugin {
             'expirynotify' => $validexpirynotify,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint6' => PARAM_INT,
             'customint7' => PARAM_INT,
+            'customint8' => PARAM_INT,
             'customchar1' => PARAM_TEXT,
         ];
         if ($data['expirynotify'] != 0) {
