@@ -34,6 +34,7 @@ You can find new versions of the plugin at <a href=https://github.com/Snickser/m
 <img src="https://img.shields.io/github/v/release/Snickser/moodle-enrol_yafee.svg"><br>
 Please send me some <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">donate</a>😊</div>
 BTC 1FHtZ82jLoBZ8ZsU7J2E9Cxy2xgUU7GJtD<br>
+EVM 0x4E2E41CD0F72095126f3d2945C545D069629b4d4<br>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>';
 $string['enrolenddate'] = 'End date';
@@ -62,9 +63,9 @@ $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
 $string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles';
 $string['freetrial'] = 'Free trial of training';
-$string['freetrialbutton'] = 'Trial enrol';
 $string['freetrial_desc'] = 'You have a trial period to enrol';
 $string['freetrial_help'] = 'Allows you to open a course once for a certain period of time without payment.';
+$string['freetrialbutton'] = 'Trial enrol';
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
 $string['nocost'] = 'There is no cost to enrol in this course!';
 $string['paymentaccount'] = 'Payment account';
