@@ -530,9 +530,9 @@ class enrol_yafee_plugin extends enrol_plugin {
             $options,
         );
         $trialarray[] =& $mform->createElement('advcheckbox', 'trialenabled', '', get_string('enable'));
-        if ( $instance->customint7 ) {
-    	    $mform->setDefault('trialenabled', 1);
-    	}
+        if ($instance->customint7) {
+            $mform->setDefault('trialenabled', 1);
+        }
         $mform->addGroup($trialarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
