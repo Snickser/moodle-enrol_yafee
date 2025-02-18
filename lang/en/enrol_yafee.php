@@ -12,10 +12,10 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'enrol_yafee', language 'en'
+ * Strings for component 'enrol_yafee', language 'en'.
  *
  * @package    enrol_yafee
  * @copyright 2025 Alex Orlov <snickser@gmail.com>
