@@ -61,7 +61,7 @@ $paymentid = helper::save_payment(
     $instanceid,
     $userid,
     0,
-    'USD',
+    $payable->get_currency(),
     'yafee'
 );
 
