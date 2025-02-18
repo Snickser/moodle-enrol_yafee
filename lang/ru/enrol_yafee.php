@@ -23,7 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['defaultrole'] = 'Назначение роли по умолчанию';
+$string['assignrole'] = 'Назначить роль';
+$string['cost'] = 'Оплата за зачисление';
+$string['costerror'] = '.';
+$string['currency'] = 'Валюта';
+$string['defaultrole'] = 'Роль по умолчанию';
 $string['defaultrole_desc'] = 'Выберите роль, которая будет назначена самостоятельно записанным пользователям';
 $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versiondisk})<br>
 Новые версии плагина вы можете найти на <a href=https://github.com/Snickser/moodle-enrol_yafee>GitHub.com</a>
