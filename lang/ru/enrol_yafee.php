@@ -25,7 +25,7 @@
 
 $string['assignrole'] = 'Назначить роль';
 $string['cost'] = 'Оплата за зачисление';
-$string['costerror'] = '.';
+$string['costerror'] = 'Стоимость должна быть указана в виде числа.';
 $string['currency'] = 'Валюта';
 $string['defaultrole'] = 'Роль по умолчанию';
 $string['defaultrole_desc'] = 'Выберите роль, которая будет назначена самостоятельно записанным пользователям';
