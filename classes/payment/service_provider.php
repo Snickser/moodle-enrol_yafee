@@ -81,7 +81,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $plugin = enrol_get_plugin('yafee');
 
-    // Get current time.
+        // Get current time.
         $userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id]);
         if ($userdata->timeend > time()) {
             $timestart = $userdata->timestart;
@@ -91,7 +91,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
             $timeend = $timestart;
         }
 
-    // Check peroids.
+        // Check peroids.
         if (
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
             $instance->customint6
