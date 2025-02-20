@@ -78,17 +78,17 @@ class service_provider implements \core_payment\local\callback\service_provider 
         global $DB;
 
         $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
-
         $plugin = enrol_get_plugin('yafee');
 
+        $timestart = time();
+        $timeend   = $timestart;
+
         // Get current time.
-        $userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id]);
-        if ($userdata->timeend > time()) {
-            $timestart = $userdata->timestart;
-            $timeend = $userdata->timeend;
-        } else {
-            $timestart = time();
-            $timeend = $timestart;
+        if ($userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id])) {
+            if ($userdata->timeend > time()) {
+                $timestart = $userdata->timestart;
+                $timeend   = $userdata->timeend;
+            }
         }
 
         // Check peroids.
@@ -96,9 +96,9 @@ class service_provider implements \core_payment\local\callback\service_provider 
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
             $instance->customint6
         ) {
-            $timeend   += $instance->customint6;
+            $timeend  += $instance->customint6;
         } else if ($instance->enrolperiod) {
-            $timeend   += $instance->enrolperiod;
+            $timeend  += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
             $timeend   = strtotime('+' . $instance->customint7 . 'month 1min', $timeend);
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
