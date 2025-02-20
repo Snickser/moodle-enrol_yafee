@@ -15,17 +15,43 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Fee enrolment plugin version specification.
+ * Fee enrolment plugin.
+ *
+ * This plugin allows you to set up paid courses.
  *
  * @package    enrol_yafee
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core_payment\helper;
+
+require_once(__DIR__ . '/../../config.php');
+global $USER, $DB;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025022000;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2023100400;        // Requires this Moodle version.
-$plugin->component = 'enrol_yafee';       // Full name of the plugin (used for diagnostics).
-$plugin->release   = '0.5';
-$plugin->maturity  = MATURITY_STABLE;
+require_login();
+require_sesskey();
+
+$instanceid = required_param('id', PARAM_INT);
+
+$instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
+
+// Set the context of the page.
+$PAGE->set_url($SCRIPT);
+$PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('admin');
+
+$PAGE->navbar->add($course->fullname);
+$PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
+$PAGE->set_title($course->shortname);
+$PAGE->set_heading($course->fullname);
+
+echo $OUTPUT->header();
+
+$plugin = enrol_get_plugin('yafee');
+echo $plugin->get_description_text($instance);
+
+echo $OUTPUT->footer();

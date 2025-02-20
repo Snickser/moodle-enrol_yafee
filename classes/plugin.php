@@ -298,21 +298,19 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         // Show enrolperiod.
-        $enrolperiod = 0;
+        $enrolperiod = $instance->enrolperiod;
         $enrolperioddesc = '';
         $freetrial = false;
         if ($instance->customint8 || $instance->customint6) {
-            if ($instance->customint6) {
-                if (
-                    !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
+            // Check first time trial.
+            if (
+                $instance->customint6 && !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
                     'userid' => $USER->id])
-                ) {
+            ) {
                     $enrolperiod = $instance->customint6;
                     $freetrial = true;
-                }
-            } else {
-                $enrolperiod = $instance->enrolperiod;
             }
+            // Check month and year.
             if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
@@ -665,5 +663,57 @@ class enrol_yafee_plugin extends enrol_plugin {
     public function can_hide_show_instance($instance) {
         $context = context_course::instance($instance->courseid);
         return has_capability('enrol/fee:config', $context);
+    }
+
+    /**
+     * Sets up navigation entries.
+     *
+     * @param navigation_node $instancesnode navigation node
+     * @param stdClass $instance enrol record instance
+     *
+     * @throws coding_exception
+     * @return void
+     */
+    public function add_course_navigation($instancesnode, stdClass $instance) {
+        global $USER, $DB;
+        if ($instance->enrol !== 'yafee') {
+            throw new coding_exception('Invalid enrol instance type!');
+        }
+        $context = context_course::instance($instance->courseid);
+
+        if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
+            $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id]);
+
+            if ($instance->expirynotify && $data->timeend - time() < $instance->expirythreshold) {
+                // Now manipulate upwards, bail as quickly as possible if not appropriate.
+                $navigation = $instancesnode;
+                while ($navigation->parent !== null) {
+                    $navigation = $navigation->parent;
+                }
+                if (!$courseadminnode = $navigation->get("courseadmin")) {
+                    return;
+                }
+                // Locate or add our own node if appropriate.
+                if (!$cayafeenode = $courseadminnode->get("cayafee")) {
+                    $nodeproperties = [
+                        'text'          => get_string('menuname', 'enrol_yafee'),
+                        'shorttext'     => get_string('menunameshort', 'enrol_yafee'),
+                        'type'          => navigation_node::TYPE_CUSTOM,
+                        'key'           => 'cayafee',
+                    ];
+                    $cayafeenode = new navigation_node($nodeproperties);
+                    $courseadminnode->add_node($cayafeenode, 'users');
+                }
+                // Add coupon manager node.
+                $cayafeenode->add(
+                    get_string('menuname', 'enrol_yafee'),
+                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id, 'sesskey' => sesskey()]),
+                    navigation_node::TYPE_CUSTOM,
+                    get_string('menuname', 'enrol_yafee'),
+                    'yafee',
+                    new pix_icon('icon', '', 'enrol_yafee')
+                );
+            }
+        }
     }
 }
