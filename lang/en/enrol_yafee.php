@@ -48,7 +48,7 @@ $string['enrolstartdate_help'] = 'If enabled, users can only be enrolled from th
 $string['expiredaction'] = 'Enrolment expiry action';
 $string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is unenrolled.';
 $string['expirymessageenrolledbody'] = 'Dear {$a->user},
-«{$a->courseid}»
+
 This is a notification that your enrolment in the course \'{$a->course}\' is due to expire on {$a->timeend}.
 
 If you need help, please contact {$a->enroller}.';
