@@ -48,7 +48,7 @@ $string['enrolstartdate_help'] = 'If enabled, users can only be enrolled from th
 $string['expiredaction'] = 'Enrolment expiry action';
 $string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is unenrolled.';
 $string['expirymessageenrolledbody'] = 'Dear {$a->user},
-
+«{$a->courseid}»
 This is a notification that your enrolment in the course \'{$a->course}\' is due to expire on {$a->timeend}.
 
 If you need help, please contact {$a->enroller}.';
@@ -66,6 +66,8 @@ $string['freetrial'] = 'Free trial of training';
 $string['freetrial_desc'] = 'You have a trial period to enrol';
 $string['freetrial_help'] = 'Allows you to open a course once for a certain period of time without payment.';
 $string['freetrialbutton'] = 'Trial enrol';
+$string['menuname'] = 'Payment';
+$string['menunameshort'] = 'Payment';
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
 $string['nocost'] = 'There is no cost to enrol in this course!';
 $string['paymentaccount'] = 'Payment account';

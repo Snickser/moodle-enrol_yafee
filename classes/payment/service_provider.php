@@ -81,21 +81,28 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $plugin = enrol_get_plugin('yafee');
 
+    // Get current time.
+        $userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id]);
+        if ($userdata->timeend > time()) {
+            $timestart = $userdata->timestart;
+            $timeend = $userdata->timeend;
+        } else {
+            $timestart = time();
+            $timeend = $timestart;
+        }
+
+    // Check peroids.
         if (
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
             $instance->customint6
         ) {
-            $timestart = time();
-            $timeend   = $timestart + $instance->customint6 + 60;
+            $timeend   += $instance->customint6;
         } else if ($instance->enrolperiod) {
-            $timestart = time();
-            $timeend   = $timestart + $instance->enrolperiod;
+            $timeend   += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
-            $timestart = time();
-            $timeend   = strtotime('+' . $instance->customint7 . 'month 1min');
+            $timeend   = strtotime('+' . $instance->customint7 . 'month 1min', $timeend);
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
-            $timestart = time();
-            $timeend   = strtotime('+' . $instance->customint7 . 'year 1min');
+            $timeend   = strtotime('+' . $instance->customint7 . 'year 1min', $timeend);
         } else {
             $timestart = 0;
             $timeend   = 0;
