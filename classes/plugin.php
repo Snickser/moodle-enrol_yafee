@@ -681,10 +681,8 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
         $context = context_course::instance($instance->courseid);
 
-        if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
-            $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id]);
-
-            if ($instance->expirynotify && $data->timeend - time() < $instance->expirythreshold) {
+        if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
+            if ($instance->expirynotify && $data->timeend && $data->timeend - time() < $instance->expirythreshold) {
                 // Now manipulate upwards, bail as quickly as possible if not appropriate.
                 $navigation = $instancesnode;
                 while ($navigation->parent !== null) {
@@ -698,17 +696,17 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $nodeproperties = [
                         'text'          => get_string('menuname', 'enrol_yafee'),
                         'shorttext'     => get_string('menunameshort', 'enrol_yafee'),
-                        'type'          => navigation_node::TYPE_CUSTOM,
+                        'type'          => navigation_node::TYPE_SETTING,
                         'key'           => 'cayafee',
                     ];
                     $cayafeenode = new navigation_node($nodeproperties);
                     $courseadminnode->add_node($cayafeenode, 'users');
                 }
-                // Add coupon manager node.
+                // Add node.
                 $cayafeenode->add(
                     get_string('menuname', 'enrol_yafee'),
-                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id, 'sesskey' => sesskey()]),
-                    navigation_node::TYPE_CUSTOM,
+                    new moodle_url('/enrol/yafee/pay.php', ['sesskey' => sesskey(), 'id' => $instance->id]),
+                    navigation_node::TYPE_SETTING,
                     get_string('menuname', 'enrol_yafee'),
                     'yafee',
                     new pix_icon('icon', '', 'enrol_yafee')
