@@ -42,10 +42,11 @@ $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXI
 // Set the context of the page.
 $PAGE->set_url($SCRIPT);
 $PAGE->set_context(context_system::instance());
-$PAGE->set_pagelayout('admin');
+$PAGE->set_cacheable(false);
+$PAGE->set_pagelayout('standard');
 
-$PAGE->navbar->add($course->fullname);
 $PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
+$PAGE->set_secondary_navigation(false);
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 
