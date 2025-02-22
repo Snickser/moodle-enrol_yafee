@@ -44,7 +44,7 @@ $context = context_course::instance($course->id, MUST_EXIST);
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
 $PAGE->set_pagelayout('incourse');
-$PAGE->set_url('/enrol/index.php', array('id'=>$course->id));
+$PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
 $PAGE->set_secondary_navigation(false);
 $PAGE->add_body_class('limitedwidth');
 
