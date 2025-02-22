@@ -38,19 +38,25 @@ $instanceid = required_param('id', PARAM_INT);
 
 $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
+$context = context_course::instance($course->id, MUST_EXIST);
 
 // Set the context of the page.
-$PAGE->set_url($SCRIPT);
-$PAGE->set_context(context_system::instance());
-$PAGE->set_cacheable(false);
-$PAGE->set_pagelayout('standard');
-
-$PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
+$PAGE->set_course($course);
+$PAGE->set_context($context->get_parent_context());
+$PAGE->set_pagelayout('incourse');
+$PAGE->set_url('/enrol/index.php', array('id'=>$course->id));
 $PAGE->set_secondary_navigation(false);
+$PAGE->add_body_class('limitedwidth');
+
+$PAGE->set_cacheable(false);
+$PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 
 echo $OUTPUT->header();
+
+$courserenderer = $PAGE->get_renderer('core', 'course');
+echo $courserenderer->course_info_box($course);
 
 $plugin = enrol_get_plugin('yafee');
 echo $plugin->get_description_text($instance);
