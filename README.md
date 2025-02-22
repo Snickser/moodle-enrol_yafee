@@ -15,7 +15,7 @@ This plugin contains the following features on top of the core payment plugin:
 * Extended enrolment duration, calendar month and calendar year.
 * Can show enrolment duration on page.
 * Free trial enrolment option.
-* Extend enrolment by paying again using the link in the navigation menu.
+* Renew enrolment duration by paying again using the link in the navigation menu when it's about to expire.
 
 By enabling the appropriate settings, you can limit the time of paid registration of students for the course. After the set time, access to the course is suspended and can be resumed by re-payment. Course payment is available for suspended students, unlike other plugins.
 
