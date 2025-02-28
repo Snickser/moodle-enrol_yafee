@@ -170,6 +170,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
+        $fields['customint5']      = 0;
         $fields['customint6']      = 0;
         $fields['customint7']      = 0;
         $fields['customint8']      = 0;
@@ -343,6 +344,14 @@ class enrol_yafee_plugin extends enrol_plugin {
             $cost = (float) $instance->cost;
         }
 
+        // Check uninterrupted cost.
+        if ($instance->customint5 && $instance->enrolperiod) {
+            $price = $cost / $instance->enrolperiod;
+            $cost += (time() - $data->timeend) * $price;
+        } else {
+            $instance->customint5 = 0;
+        }
+
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
         } else {
@@ -350,6 +359,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $instance->currency),
                 'instanceid' => $instance->id,
+                'uninterrupted' => $instance->customint5,
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -535,6 +545,17 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
+        if ($plugininfo->versiondisk >= 2025022804) {
+            $mform->addElement(
+                'advcheckbox',
+                'customint5',
+                get_string('uninterrupted', 'enrol_yafee')
+            );
+            $mform->setType('customint5', PARAM_INT);
+            $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
+        }
+
         $mform->addElement(
             'advcheckbox',
             'customint8',
@@ -610,6 +631,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'expirynotify' => $validexpirynotify,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint5' => PARAM_INT,
             'customint6' => PARAM_INT,
             'customint7' => PARAM_INT,
             'customint8' => PARAM_INT,

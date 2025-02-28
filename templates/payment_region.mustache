@@ -46,7 +46,8 @@
         "enrolperiod": "7",
         "enrolperiod_desc": "day",
         "freetrial": true,
-        "sesskey": 234587628
+        "sesskey": 234587628,
+        "uninterrupted": true
     }
 
 }}
@@ -75,6 +76,10 @@
  {{#enrolperiod}}
  <h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
  {{/enrolperiod}}
+
+{{#uninterrupted}}
+ <h4>{{# str }} uninterrupted_help, enrol_yafee {{/ str}}</h4>
+{{/uninterrupted}}
 
         <button
             class="btn btn-primary"
