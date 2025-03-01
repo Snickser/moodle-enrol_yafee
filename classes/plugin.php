@@ -284,8 +284,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         ob_start();
 
-        if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
-            $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id]);
+        if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
             if ($data->status) {
                 return ob_get_clean();
             }
@@ -297,6 +296,12 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
             return ob_get_clean();
+        }
+
+        if ((float) $instance->cost <= 0) {
+            $cost = (float) $this->get_config('cost');
+        } else {
+            $cost = (float) $instance->cost;
         }
 
         // Show enrolperiod.
@@ -312,15 +317,31 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $enrolperiod = $instance->customint6;
                     $freetrial = true;
             }
+
+            // Prepare month and year.
+            $timeend = time();
+            if (isset($data->timeend)) {
+                $timeend = $data->timeend;
+            }
+            $t1 = getdate($timeend);
+            $t2 = getdate(time());
+
             // Check month and year.
             if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
+                    $cost  = $delta * $cost;
+                }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
             } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = $t2['year'] - $t1['year'] + 1;
+                    $cost  = $delta * $cost;
+                }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
-                $uninterrupted = $enrolperiod;
                 if ($enrolperiod >= 86400 * 7) {
                     $enrolperioddesc = get_string('weeks');
                     $enrolperiod = round($enrolperiod / (86400 * 7));
@@ -337,24 +358,20 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
-        $course = $DB->get_record('course', ['id' => $instance->courseid]);
-        $context = context_course::instance($course->id);
-
-        if ((float) $instance->cost <= 0) {
-            $cost = (float) $this->get_config('cost');
-        } else {
-            $cost = (float) $instance->cost;
-        }
-
         // Check uninterrupted cost.
         if ($instance->customint5 && $instance->enrolperiod && isset($data) && $data->timeend < time()) {
             $price = $cost / $instance->enrolperiod;
-            $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) *
-                      $instance->enrolperiod + $data->timestart - $data->timeend;
+            $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod +
+                     $data->timestart - $data->timeend + $instance->enrolperiod;
             $cost  = $delta * $price;
-        } else {
+        }
+
+        if ($cost == $instance->cost) {
             $instance->customint5 = 0;
         }
+
+        $course = $DB->get_record('course', ['id' => $instance->courseid]);
+        $context = context_course::instance($course->id);
 
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';

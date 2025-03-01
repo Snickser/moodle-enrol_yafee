@@ -88,12 +88,16 @@ class service_provider implements \core_payment\local\callback\service_provider 
             // Check trial.
             if ($userdata->timestart) {
                 $timestart = $userdata->timestart;
+                $timeend   = $userdata->timeend;
             }
             // Append if not expired.
             if ($userdata->timeend > time()) {
                 $timeend = $userdata->timeend;
             }
         }
+
+        $t1 = getdate($timeend);
+        $t2 = getdate(time());
 
         // Check peroids.
         if (
@@ -107,9 +111,19 @@ class service_provider implements \core_payment\local\callback\service_provider 
             // Add standard period.
             $timeend  += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'month', $timeend);
+            if ($instance->customint5) {
+                $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
+                $timeend = strtotime('+' . $delta . 'month', $userdata->timeend);
+            } else {
+                $timeend = strtotime('+' . $instance->customint7 . 'month', $timeend);
+            }
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'year', $timeend);
+            if ($instance->customint5) {
+                $delta = ($t2['year'] - $t1['year']) + 1;
+                $timeend = strtotime('+' . $delta . 'year', $userdata->timeend);
+            } else {
+                $timeend = strtotime('+' . $instance->customint7 . 'year', $timeend);
+            }
         } else {
             $timestart = 0;
             $timeend   = 0;
