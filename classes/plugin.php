@@ -345,7 +345,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         // Check uninterrupted cost.
-        if ($instance->customint5 && $instance->enrolperiod) {
+        if ($instance->customint5 && $instance->enrolperiod && isset($data)) {
             $price = $cost / $instance->enrolperiod;
             $cost += (time() - $data->timeend) * $price;
         } else {
