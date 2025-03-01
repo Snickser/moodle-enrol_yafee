@@ -107,9 +107,9 @@ class service_provider implements \core_payment\local\callback\service_provider 
             // Add standard period.
             $timeend  += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'month -1day', $timeend);
+            $timeend   = strtotime('+' . $instance->customint7 . 'month', $timeend);
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'year -1day', $timeend);
+            $timeend   = strtotime('+' . $instance->customint7 . 'year', $timeend);
         } else {
             $timestart = 0;
             $timeend   = 0;
