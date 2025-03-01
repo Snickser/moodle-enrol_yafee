@@ -224,6 +224,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
         // Check trial.
         if (!$data->trialenabled) {
+            $data->customint5 = 0;
             $data->customint7 = 0;
         }
         // Make standard periods.
@@ -345,7 +346,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         // Check uninterrupted cost.
-        if ($instance->customint5 && $instance->enrolperiod && isset($data)) {
+        if ($instance->customint5 && $instance->enrolperiod && isset($data) && $data->timeend < time()) {
             $price = $cost / $instance->enrolperiod;
             $cost += (time() - $data->timeend) * $price;
         } else {
@@ -546,7 +547,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
         $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
-        if ($plugininfo->versiondisk >= 2025022804) {
+        if ($plugininfo->versiondisk >= 2025023000) {
             $mform->addElement(
                 'advcheckbox',
                 'customint5',
@@ -554,6 +555,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             );
             $mform->setType('customint5', PARAM_INT);
             $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
+            $mform->DisabledIf('customint5', 'trialenabled', "eq", 0);
         }
 
         $mform->addElement(
@@ -727,7 +729,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 // Add node.
                 $cayafeenode->add(
                     get_string('menuname', 'enrol_yafee'),
-                    new moodle_url('/enrol/yafee/pay.php', ['sesskey' => sesskey(), 'id' => $instance->id]),
+                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id, 'sesskey' => sesskey()]),
                     navigation_node::TYPE_SETTING,
                     get_string('menuname', 'enrol_yafee'),
                     'yafee',
