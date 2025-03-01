@@ -83,11 +83,15 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timestart = time();
         $timeend   = $timestart;
 
-        // Get current time.
+        // Get time data.
         if ($userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id])) {
-            $timestart = $userdata->timestart;
+            // Check trial.
+            if ($userdata->timestart) {
+                $timestart = $userdata->timestart;
+            }
+            // Append if not expired.
             if ($userdata->timeend > time()) {
-                $timeend   = $userdata->timeend;
+                $timeend = $userdata->timeend;
             }
         }
 
@@ -96,13 +100,16 @@ class service_provider implements \core_payment\local\callback\service_provider 
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
             $instance->customint6
         ) {
+            // Add trial period.
+            $timestart = 0;
             $timeend  += $instance->customint6;
         } else if ($instance->enrolperiod) {
+            // Add standard period.
             $timeend  += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'month 1min', $timeend);
+            $timeend   = strtotime('+' . $instance->customint7 . 'month -1day', $timeend);
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'year 1min', $timeend);
+            $timeend   = strtotime('+' . $instance->customint7 . 'year -1day', $timeend);
         } else {
             $timestart = 0;
             $timeend   = 0;

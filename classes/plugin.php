@@ -170,11 +170,11 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
-        $fields['customint5']      = 0;
-        $fields['customint6']      = 0;
-        $fields['customint7']      = 0;
-        $fields['customint8']      = 0;
-        $fields['customchar1']     = 'minute';
+        $fields['customint5']      = 0; // Uninterrupt enabler.
+        $fields['customint6']      = 0; // Trial seconds.
+        $fields['customint7']      = 0; // Number periods of customchar1.
+        $fields['customint8']      = 0; // Showduration enabler.
+        $fields['customchar1']     = 'minute'; // Types of periods.
 
         return $fields;
     }
@@ -320,6 +320,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
+                $uninterrupted = $enrolperiod;
                 if ($enrolperiod >= 86400 * 7) {
                     $enrolperioddesc = get_string('weeks');
                     $enrolperiod = round($enrolperiod / (86400 * 7));
@@ -348,8 +349,9 @@ class enrol_yafee_plugin extends enrol_plugin {
         // Check uninterrupted cost.
         if ($instance->customint5 && $instance->enrolperiod && isset($data) && $data->timeend < time()) {
             $price = $cost / $instance->enrolperiod;
-            $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod;
-            $cost = $delta * $price;
+            $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) *
+                      $instance->enrolperiod + $data->timestart - $data->timeend;
+            $cost  = $delta * $price;
         } else {
             $instance->customint5 = 0;
         }
