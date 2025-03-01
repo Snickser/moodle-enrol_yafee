@@ -85,8 +85,8 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         // Get current time.
         if ($userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id])) {
+            $timestart = $userdata->timestart;
             if ($userdata->timeend > time()) {
-                $timestart = $userdata->timestart;
                 $timeend   = $userdata->timeend;
             }
         }

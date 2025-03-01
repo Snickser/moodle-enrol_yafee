@@ -72,14 +72,14 @@
 </form>
 {{/freetrial}}
 
+{{#uninterrupted}}
+ <h4>{{# str }} uninterrupted_desc, enrol_yafee {{/ str}}</h4>
+{{/uninterrupted}}
+
 {{^freetrial}}
  {{#enrolperiod}}
  <h4>{{# str }} enrolperiod, enrol {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
  {{/enrolperiod}}
-
-{{#uninterrupted}}
- <h4>{{# str }} uninterrupted_desc, enrol_yafee {{/ str}}</h4>
-{{/uninterrupted}}
 
         <button
             class="btn btn-primary"
