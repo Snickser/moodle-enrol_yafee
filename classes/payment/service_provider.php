@@ -83,11 +83,15 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timestart = time();
         $timeend   = $timestart;
 
-        // Get current time.
+        // Get time data.
         if ($userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id])) {
-            if ($userdata->timeend > time()) {
+            // Check trial.
+            if ($userdata->timestart) {
                 $timestart = $userdata->timestart;
-                $timeend   = $userdata->timeend;
+            }
+            // Append if not expired.
+            if ($userdata->timeend > time()) {
+                $timeend = $userdata->timeend;
             }
         }
 
@@ -96,13 +100,57 @@ class service_provider implements \core_payment\local\callback\service_provider 
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
             $instance->customint6
         ) {
+            // Add trial period.
+            $timestart = 0;
             $timeend  += $instance->customint6;
+        } else if ($instance->enrolperiod && $instance->customint5) {
+            // Uninterrupted period.
+            if (isset($userdata->timestart)) {
+                // Check trial.
+                if ($userdata->timestart && $userdata->timeend < time()) {
+                    $timeend = ceil((time() - $userdata->timestart) / $instance->enrolperiod) *
+                     $instance->enrolperiod + $userdata->timestart;
+                } else {
+                    $timeend += $instance->enrolperiod;
+                }
+            } else {
+                $timeend += $instance->enrolperiod;
+            }
         } else if ($instance->enrolperiod) {
-            $timeend  += $instance->enrolperiod;
+            // Standard period.
+            $timeend += $instance->enrolperiod;
         } else if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'month 1min', $timeend);
+            if (isset($userdata->timeend)) {
+                $timeend = $userdata->timeend;
+            }
+            $t1 = getdate($timeend);
+            $t2 = getdate(time());
+            if ($instance->customint5) {
+                if ($timeend < time()) {
+                    $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
+                    $timeend = strtotime('+' . $delta . 'month', $timeend);
+                } else {
+                    $timeend = strtotime('+' . $instance->customint7 . 'month', $timeend);
+                }
+            } else {
+                $timeend = strtotime('+' . $instance->customint7 . 'month', $timeend);
+            }
         } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
-            $timeend   = strtotime('+' . $instance->customint7 . 'year 1min', $timeend);
+            if (isset($userdata->timeend)) {
+                $timeend = $userdata->timeend;
+            }
+            $t1 = getdate($timeend);
+            $t2 = getdate(time());
+            if ($instance->customint5) {
+                if ($timeend < time()) {
+                    $delta = ($t2['year'] - $t1['year']) + 1;
+                    $timeend = strtotime('+' . $delta . 'year', $timeend);
+                } else {
+                    $timeend = strtotime('+' . $instance->customint7 . 'year', $timeend);
+                }
+            } else {
+                $timeend = strtotime('+' . $instance->customint7 . 'year', $timeend);
+            }
         } else {
             $timestart = 0;
             $timeend   = 0;

@@ -46,7 +46,8 @@
         "enrolperiod": "7",
         "enrolperiod_desc": "day",
         "freetrial": true,
-        "sesskey": 234587628
+        "sesskey": 234587628,
+        "uninterrupted": true
     }
 
 }}
@@ -70,6 +71,10 @@
 <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
 </form>
 {{/freetrial}}
+
+{{#uninterrupted}}
+ <h4>{{# str }} uninterrupted_desc, enrol_yafee {{/ str}}</h4>
+{{/uninterrupted}}
 
 {{^freetrial}}
  {{#enrolperiod}}

@@ -170,10 +170,11 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
-        $fields['customint6']      = 0;
-        $fields['customint7']      = 0;
-        $fields['customint8']      = 0;
-        $fields['customchar1']     = 'minute';
+        $fields['customint5']      = 0; // Uninterrupt enabler.
+        $fields['customint6']      = 0; // Trial seconds.
+        $fields['customint7']      = 0; // Number periods of customchar1.
+        $fields['customint8']      = 0; // Showduration enabler.
+        $fields['customchar1']     = 'minute'; // Types of periods.
 
         return $fields;
     }
@@ -223,6 +224,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
         // Check trial.
         if (!$data->trialenabled) {
+            $data->customint5 = 0;
             $data->customint7 = 0;
         }
         // Make standard periods.
@@ -282,8 +284,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         ob_start();
 
-        if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
-            $data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id]);
+        if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
             if ($data->status) {
                 return ob_get_clean();
             }
@@ -295,6 +296,12 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
             return ob_get_clean();
+        }
+
+        if ((float) $instance->cost <= 0) {
+            $cost = (float) $this->get_config('cost');
+        } else {
+            $cost = (float) $instance->cost;
         }
 
         // Show enrolperiod.
@@ -310,11 +317,28 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $enrolperiod = $instance->customint6;
                     $freetrial = true;
             }
+
+            // Prepare month and year.
+            $timeend = time();
+            if (isset($data->timeend)) {
+                $timeend = $data->timeend;
+            }
+            $t1 = getdate($timeend);
+            $t2 = getdate(time());
+
             // Check month and year.
             if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
+                    $cost  = $delta * $cost;
+                }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
             } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = $t2['year'] - $t1['year'] + 1;
+                    $cost  = $delta * $cost;
+                }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
@@ -334,14 +358,22 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
+        // Check uninterrupted cost.
+        if (isset($data->timeend) || isset($data->timestart)) {
+            if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
+                $price = $cost / $instance->enrolperiod;
+                $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod +
+                     $data->timestart - $data->timeend;
+                $cost  = $delta * $price;
+            }
+        }
+
+        if ($cost == $instance->cost) {
+            $instance->customint5 = 0;
+        }
+
         $course = $DB->get_record('course', ['id' => $instance->courseid]);
         $context = context_course::instance($course->id);
-
-        if ((float) $instance->cost <= 0) {
-            $cost = (float) $this->get_config('cost');
-        } else {
-            $cost = (float) $instance->cost;
-        }
 
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
@@ -350,6 +382,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $instance->currency),
                 'instanceid' => $instance->id,
+                'uninterrupted' => $instance->customint5,
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -535,6 +568,18 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
+        if ($plugininfo->versiondisk >= 2025023000) {
+            $mform->addElement(
+                'advcheckbox',
+                'customint5',
+                get_string('uninterrupted', 'enrol_yafee')
+            );
+            $mform->setType('customint5', PARAM_INT);
+            $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
+            $mform->DisabledIf('customint5', 'trialenabled', "eq", 0);
+        }
+
         $mform->addElement(
             'advcheckbox',
             'customint8',
@@ -610,6 +655,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'expirynotify' => $validexpirynotify,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint5' => PARAM_INT,
             'customint6' => PARAM_INT,
             'customint7' => PARAM_INT,
             'customint8' => PARAM_INT,
@@ -705,7 +751,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 // Add node.
                 $cayafeenode->add(
                     get_string('menuname', 'enrol_yafee'),
-                    new moodle_url('/enrol/yafee/pay.php', ['sesskey' => sesskey(), 'id' => $instance->id]),
+                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id, 'sesskey' => sesskey()]),
                     navigation_node::TYPE_SETTING,
                     get_string('menuname', 'enrol_yafee'),
                     'yafee',

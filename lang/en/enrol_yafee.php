@@ -35,6 +35,7 @@ You can find new versions of the plugin at <a href=https://github.com/Snickser/m
 Please send me some <a href="https://yoomoney.ru/fundraise/143H2JO3LLE.240720">donate</a>😊</div>
 TRX TRGMc3b63Lus6ehLasbbHxsb2rHky5LbPe<br>
 BTC 1GFTTPCgRTC8yYL1gU7wBZRfhRNRBdLZsq<br>
+ETH 0x1bce7aadef39d328d262569e6194febe597cb2c9<br>
 <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=143H2JO3LLE.240720"
 width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe><br>';
 $string['enrolenddate'] = 'End date';
@@ -82,6 +83,9 @@ $string['showduration'] = 'Show duration of training';
 $string['status'] = 'Allow enrolment on payment enrolments';
 $string['status_desc'] = 'Allow users to make a payment to enrol into a course by default.';
 $string['syncenrolmentstask'] = 'Synchronise fee enrolments task';
+$string['uninterrupted'] = 'Pay for missed time';
+$string['uninterrupted_desc'] = 'The cost of any missed training time since the end of the previous payment will be added to the course fee.';
+$string['uninterrupted_help'] = 'The cost of the break from the last payment is added to the course fee. Only works in courses with a set duration of study.';
 $string['validationerror'] = 'Enrolments can not be enabled without specifying the payment account';
 $string['yafee:config'] = 'Configure enrolment on payment enrol instances';
 $string['yafee:manage'] = 'Manage enrolled users';
