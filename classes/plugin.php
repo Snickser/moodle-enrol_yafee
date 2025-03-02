@@ -359,11 +359,13 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         // Check uninterrupted cost.
-        if ($instance->customint5 && $instance->enrolperiod && isset($data) && $data->timeend < time()) {
-            $price = $cost / $instance->enrolperiod;
-            $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod +
-                     $data->timestart - $data->timeend + $instance->enrolperiod;
-            $cost  = $delta * $price;
+        if (isset($data->timeend) || isset($data->timestart)) {
+            if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
+                $price = $cost / $instance->enrolperiod;
+                $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod +
+                     $data->timestart - $data->timeend;
+                $cost  = $delta * $price;
+            }
         }
 
         if ($cost == $instance->cost) {
