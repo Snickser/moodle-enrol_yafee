@@ -106,7 +106,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         } else if ($instance->enrolperiod && $instance->customint5) {
             // Uninterrupted period.
             if (isset($userdata->timestart)) {
-            // Check trial.
+                // Check trial.
                 if ($userdata->timestart && $userdata->timeend < time()) {
                     $timeend = ceil((time() - $userdata->timestart) / $instance->enrolperiod) *
                      $instance->enrolperiod + $userdata->timestart;
