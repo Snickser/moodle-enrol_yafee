@@ -546,6 +546,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             ['size' => '3']
         );
         $mform->setType('customint7', PARAM_INT);
+        $trialarray[] =& $mform->createElement('static', null, null, '&nbsp');
         $options = [
          'year' => get_string('years', 'moodle'),
          'month' => get_string('months', 'moodle'),
@@ -560,20 +561,24 @@ class enrol_yafee_plugin extends enrol_plugin {
             '',
             $options,
         );
+        $trialarray[] =& $mform->createElement('static', null, null, '&nbsp');
         $trialarray[] =& $mform->createElement('advcheckbox', 'trialenabled', '', get_string('enable'));
         if ($instance->customint7) {
             $mform->setDefault('trialenabled', 1);
         }
-        $mform->addGroup($trialarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [' '], false);
+        $mform->addGroup($trialarray, 'duration', get_string('enrolperiod', 'enrol_yafee'), [''], false);
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
-        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
-        if ($plugininfo->versiondisk >= 2025023000) {
+        $p1 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
+        $p2 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
+        $p3 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
+        if ($p1->versiondisk > 2025023000 || $p2->versiondisk > 2025023000 || $p3->versiondisk > 2025023000) {
             $mform->addElement(
                 'advcheckbox',
                 'customint5',
-                get_string('uninterrupted', 'enrol_yafee')
+                get_string('uninterrupted', 'enrol_yafee'),
+                get_string('uninterrupted_warn', 'enrol_yafee')
             );
             $mform->setType('customint5', PARAM_INT);
             $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
