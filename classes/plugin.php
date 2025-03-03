@@ -570,10 +570,16 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
-        $p1 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
-        $p2 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
-        $p3 = \core_plugin_manager::instance()->get_plugin_info('paygw_bepaid');
-        if ($p1->versiondisk > 2025023000 || $p2->versiondisk > 2025023000 || $p3->versiondisk > 2025023000) {
+        // Check allowed paygws.
+        $uninterrupted = false;
+        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa'] as $value) {
+            if ($plugin = \core_plugin_manager::instance()->get_plugin_info($value)) {
+                if ($plugin->versiondisk > 2025023000) {
+                    $uninterrupted = true;
+                }
+            }
+        }
+        if ($uninterrupted) {
             $mform->addElement(
                 'advcheckbox',
                 'customint5',
