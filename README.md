@@ -26,4 +26,4 @@ This plugin is versatile, but it was originally designed to support my payment p
 
 - [Robokassa](https://github.com/Snickser/moodle-paygw_robokassa)
 - [YooKassa](https://github.com/Snickser/moodle-paygw_yookassa)
-- [bePaid](https://github.com/Snickser/moodle-paygw_bePaid)
+- [bePaid](https://github.com/Snickser/moodle-paygw_bepaid)
