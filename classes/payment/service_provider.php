@@ -95,6 +95,14 @@ class service_provider implements \core_payment\local\callback\service_provider 
             }
         }
 
+        // Foolproof сheck, allowed gateways for uninterrupted payment.
+        $payment = $DB->get_record('payments', ['id' => $paymentid]);
+        if ($payment->gateway == 'bepaid' || $payment->gateway == 'robokassa' || $payment->gateway == 'yookassa') {
+            $uninterrupted = true;
+        } else {
+            $instance->customint5 = 0;
+        }
+
         // Check peroids.
         if (
             !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'userid' => $userid]) &&
