@@ -170,7 +170,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
-        $fields['customint4']      = 0; // After-payment enabler.
+        $fields['customint4']      = 0; // Force-payment enabler.
         $fields['customint5']      = 0; // Uninterrupt enabler.
         $fields['customint6']      = 0; // Trial seconds.
         $fields['customint7']      = 0; // Number periods of customchar1.
