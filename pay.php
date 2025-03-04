@@ -42,7 +42,7 @@ $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXI
 $context = context_course::instance($course->id, MUST_EXIST);
 
 // For enrolled users only.
-if (!is_enrolled($context, $USER, '', true)) {
+if (!is_enrolled($context, $USER, '', false)) {
     redirect($CFG->wwwroot . '/enrol/index.php?id=' . $course->id);
 }
 
