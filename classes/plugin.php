@@ -170,6 +170,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
+        $fields['customint4']      = 0; // After-payment enabler.
         $fields['customint5']      = 0; // Uninterrupt enabler.
         $fields['customint6']      = 0; // Trial seconds.
         $fields['customint7']      = 0; // Number periods of customchar1.
@@ -272,26 +273,14 @@ class enrol_yafee_plugin extends enrol_plugin {
     }
 
     /**
-     * Creates course enrol form, checks if form submitted
-     * and enrols user if necessary. It can also redirect.
-     *
-     * @param stdClass $instance
-     * @return string html text, usually a form in a text box
-     */
-    public function enrol_page_force(stdClass $instance) {
-        return $this->show_payment_info($instance, true);
-    }
-
-    /**
      * Generates payment information to display on enrol/info page.
      *
      * @param stdClass $instance
-     * @param bool $force
      * @return false|string
      * @throws coding_exception
      * @throws dml_exception
      */
-    private function show_payment_info(stdClass $instance, $force = false) {
+    private function show_payment_info(stdClass $instance) {
         global $USER, $OUTPUT, $DB;
 
         ob_start();
@@ -302,12 +291,16 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
-        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time() && !$force) {
-            return ob_get_clean();
+        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
+            if ($instance->customint4 == 0 || $instance->customint4 == 2) {
+                return ob_get_clean();
+            }
         }
 
-        if ($instance->enrolenddate != 0 && $instance->enrolenddate < time() && !$force) {
-            return ob_get_clean();
+        if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
+            if ($instance->customint4 == 0 || $instance->customint4 == 1) {
+                return ob_get_clean();
+            }
         }
 
         if ((float) $instance->cost <= 0) {
@@ -619,6 +612,21 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('expirythreshold', 'expirythreshold', 'core_enrol');
         $mform->disabledIf('expirythreshold', 'expirynotify', 'eq', 0);
 
+        $options = [
+         0 => get_string('no'),
+         1 => get_string('enrolstartdate', 'enrol_yafee'),
+         2 => get_string('enrolenddate', 'enrol_yafee'),
+         3 => get_string('always'),
+        ];
+        $mform->addElement(
+            'select',
+            'customint4',
+            get_string('forcepayment', 'enrol_yafee'),
+            $options
+        );
+        $mform->setType('customint4', PARAM_INT);
+        $mform->addHelpButton('customint4', 'forcepayment', 'enrol_yafee');
+
         $options = ['optional' => true];
         $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_yafee'), $options);
         $mform->setDefault('enrolstartdate', 0);
@@ -678,6 +686,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'expirynotify' => $validexpirynotify,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint4' => PARAM_INT,
             'customint5' => PARAM_INT,
             'customint6' => PARAM_INT,
             'customint7' => PARAM_INT,
