@@ -41,6 +41,11 @@ $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], 
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 
+// For enrolled users only
+if(!$DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instanceid])){
+    redirect($CFG->wwwroot . '/enrol/index.php?id=' . $course->id);
+}
+
 // Set the context of the page.
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
