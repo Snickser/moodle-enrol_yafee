@@ -41,6 +41,11 @@ $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], 
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 
+// For enrolled users only
+if (!is_enrolled($context, $USER, '', true)) {
+    redirect($CFG->wwwroot . '/enrol/index.php?id=' . $course->id);
+}
+
 // Set the context of the page.
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
@@ -60,6 +65,6 @@ $courserenderer = $PAGE->get_renderer('core', 'course');
 echo $courserenderer->course_info_box($course);
 
 $plugin = enrol_get_plugin('yafee');
-echo $plugin->enrol_page_hook($instance);
+echo $plugin->enrol_page_force($instance);
 
 echo $OUTPUT->footer();
