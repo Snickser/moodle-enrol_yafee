@@ -41,15 +41,15 @@ $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], 
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 
-// For enrolled users only
-if (!is_enrolled($context, $USER, '', true)) {
+// For enrolled users only.
+if (!is_enrolled($context, $USER, '', false)) {
     redirect($CFG->wwwroot . '/enrol/index.php?id=' . $course->id);
 }
 
 // Set the context of the page.
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
-$PAGE->set_pagelayout('incourse');
+$PAGE->set_pagelayout('course');
 $PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
 $PAGE->set_secondary_navigation(false);
 $PAGE->add_body_class('limitedwidth');
