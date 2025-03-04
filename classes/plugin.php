@@ -272,6 +272,17 @@ class enrol_yafee_plugin extends enrol_plugin {
     }
 
     /**
+     * Creates course enrol form, checks if form submitted
+     * and enrols user if necessary. It can also redirect.
+     *
+     * @param stdClass $instance
+     * @return string html text, usually a form in a text box
+     */
+    public function enrol_page_force(stdClass $instance) {
+        return $this->show_payment_info($instance, true);
+    }
+
+    /**
      * Generates payment information to display on enrol/info page.
      *
      * @param stdClass $instance
@@ -279,7 +290,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      * @throws coding_exception
      * @throws dml_exception
      */
-    private function show_payment_info(stdClass $instance) {
+    private function show_payment_info(stdClass $instance, $force = false) {
         global $USER, $OUTPUT, $DB;
 
         ob_start();
@@ -290,11 +301,11 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
-        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
+        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time() && !$force) {
             return ob_get_clean();
         }
 
-        if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
+        if ($instance->enrolenddate != 0 && $instance->enrolenddate < time() && !$force) {
             return ob_get_clean();
         }
 
