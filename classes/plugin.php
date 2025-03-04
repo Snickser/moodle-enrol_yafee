@@ -255,7 +255,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      * @return string html text, usually a form in a text box
      */
     public function enrol_page_hook(stdClass $instance) {
-        return $this->show_payment_info($instance, false);
+        return $this->show_payment_info($instance);
     }
 
     /**
@@ -268,7 +268,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      * @return string short html text
      */
     public function get_description_text($instance) {
-        return $this->show_payment_info($instance, false);
+        return $this->show_payment_info($instance);
     }
 
     /**
