@@ -49,7 +49,7 @@ if (!is_enrolled($context, $USER, '', true)) {
 // Set the context of the page.
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
-$PAGE->set_pagelayout('incourse');
+$PAGE->set_pagelayout('course');
 $PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
 $PAGE->set_secondary_navigation(false);
 $PAGE->add_body_class('limitedwidth');
