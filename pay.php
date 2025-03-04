@@ -60,6 +60,6 @@ $courserenderer = $PAGE->get_renderer('core', 'course');
 echo $courserenderer->course_info_box($course);
 
 $plugin = enrol_get_plugin('yafee');
-echo $plugin->get_description_text($instance);
+echo $plugin->enrol_page_force($instance);
 
 echo $OUTPUT->footer();
