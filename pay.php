@@ -33,11 +33,12 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
+$courseid = required_param('courseid', PARAM_INT);
 $id = required_param('id', PARAM_INT);
 
-$instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
-$course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
+$instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
 
 // For enrolled users only.
 if (!is_enrolled($context, $USER, '', false)) {
