@@ -32,12 +32,10 @@ global $USER, $DB;
 defined('MOODLE_INTERNAL') || die();
 
 require_login();
-require_sesskey();
 
-$instanceid = required_param('id', PARAM_INT);
+$id = required_param('id', PARAM_INT);
 
-$instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
-
+$instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 
@@ -53,7 +51,6 @@ $PAGE->set_pagelayout('course');
 $PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
 $PAGE->set_secondary_navigation(false);
 $PAGE->add_body_class('limitedwidth');
-
 $PAGE->set_cacheable(false);
 $PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
 $PAGE->set_title($course->shortname);
@@ -61,10 +58,20 @@ $PAGE->set_heading($course->fullname);
 
 echo $OUTPUT->header();
 
+$plugin = enrol_get_plugin('yafee');
+$form = $plugin->enrol_page_force($instance);
+
+if ($form) {
+    echo $OUTPUT->heading(get_string('renewenrolment', 'enrol_yafee'));
+}
+
 $courserenderer = $PAGE->get_renderer('core', 'course');
 echo $courserenderer->course_info_box($course);
 
-$plugin = enrol_get_plugin('yafee');
-echo $plugin->enrol_page_force($instance);
+if ($form) {
+    echo $form;
+} else {
+    notice(get_string('notenrollable', 'enrol'), $CFG->wwwroot);
+}
 
 echo $OUTPUT->footer();
