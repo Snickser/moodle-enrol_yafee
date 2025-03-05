@@ -795,7 +795,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 // Add node.
                 $cayafeenode->add(
                     get_string('menuname', 'enrol_yafee'),
-                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id, 'sesskey' => sesskey()]),
+                    new moodle_url('/enrol/yafee/pay.php', ['id' => $instance->id]),
                     navigation_node::TYPE_SETTING,
                     get_string('menuname', 'enrol_yafee'),
                     'yafee',
