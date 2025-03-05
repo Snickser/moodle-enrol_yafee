@@ -83,24 +83,30 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timestart = time();
         $timeend   = $timestart;
 
+        $allowedgateway = false;
+
+        // Foolproof сheck, allowed gateways for uninterrupted payment.
+        $payment = $DB->get_record('payments', ['id' => $paymentid]);
+        if ($payment->gateway == 'bepaid' || $payment->gateway == 'robokassa' || $payment->gateway == 'yookassa') {
+            $allowedgateway = true;
+        }
+
         // Get time data.
         if ($userdata = $DB->get_record('user_enrolments', ['userid' => $userid, 'enrolid' => $instance->id])) {
             // Check trial.
             if ($userdata->timestart) {
                 $timestart = $userdata->timestart;
             }
-            // Append if not expired.
+            // Always append if not expired.
             if ($userdata->timeend > time()) {
                 $timeend = $userdata->timeend;
             }
-        }
-
-        // Foolproof сheck, allowed gateways for uninterrupted payment.
-        $payment = $DB->get_record('payments', ['id' => $paymentid]);
-        if ($payment->gateway == 'bepaid' || $payment->gateway == 'robokassa' || $payment->gateway == 'yookassa') {
-            $uninterrupted = true;
-        } else {
-            $instance->customint5 = 0;
+            // Append if not allowed gateway in uninterrupted mode.
+            if ($instance->customint5 && !$allowedgateway) {
+                $timeend = $userdata->timeend;
+                // Unset uninterrupted mode.
+                $instance->customint5 = 0;
+            }
         }
 
         // Check peroids.
