@@ -392,12 +392,17 @@ class enrol_yafee_plugin extends enrol_plugin {
         $course = $DB->get_record('course', ['id' => $instance->courseid]);
         $context = context_course::instance($course->id);
 
+        $currency = $instance->currency;
+        if ($currency == 'BYR') {
+            $currency = 'BYN';
+        }
+
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
         } else {
             $data = [
                 'isguestuser' => isguestuser() || !isloggedin(),
-                'cost' => \core_payment\helper::get_cost_as_string($cost, $instance->currency),
+                'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
                 'uninterrupted' => $instance->customint5,
                 'description' => get_string(

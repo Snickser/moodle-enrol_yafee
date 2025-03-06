@@ -54,6 +54,11 @@ if ($DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid, 'useri
 
 $payable = helper::get_payable($component, $paymentarea, $instanceid);
 
+$currency = $payable->get_currency();
+if ($currency == 'BYR') {
+    $currency = 'BYN';
+}
+
 $paymentid = helper::save_payment(
     $payable->get_account_id(),
     $component,
@@ -61,7 +66,7 @@ $paymentid = helper::save_payment(
     $instanceid,
     $userid,
     0,
-    $payable->get_currency(),
+    $currency,
     'yafee'
 );
 
