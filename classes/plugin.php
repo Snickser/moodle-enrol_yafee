@@ -379,7 +379,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (isset($data->timeend) || isset($data->timestart)) {
             if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
                 $price = $cost / $instance->enrolperiod;
-                $delta = ceil((time() - $data->timestart) / $instance->enrolperiod) * $instance->enrolperiod +
+                $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0.7) * $instance->enrolperiod +
                      $data->timestart - $data->timeend;
                 $cost  = $delta * $price;
             }
