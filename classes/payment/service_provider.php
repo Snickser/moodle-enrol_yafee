@@ -126,8 +126,15 @@ class service_provider implements \core_payment\local\callback\service_provider 
             if (isset($userdata->timestart)) {
                 // Check trial.
                 if ($userdata->timestart && $userdata->timeend < time()) {
-                    $timeend = ceil((time() - $userdata->timestart) / $instance->enrolperiod) *
-                     $instance->enrolperiod + $userdata->timestart;
+                    $periods = ceil((time() - $userdata->timestart) / $instance->enrolperiod);
+                    // Payless mode.
+                    if ($payment->amount > 0) {
+                        $unpayed = ceil((time() - $userdata->timeend) / $instance->enrolperiod) -
+                        $payment->amount / $instance->cost;
+                    } else {
+                        $unpayed = 0;
+                    }
+                    $timeend = $userdata->timestart + ($periods - $unpayed) * $instance->enrolperiod;
                 } else {
                     $timeend += $instance->enrolperiod;
                 }
