@@ -17,6 +17,7 @@ This plugin contains the following features on top of the core payment plugin:
 * Free trial enrolment option.
 * Renew enrolment duration by paying again using the link in the navigation menu when it's about to expire.
 * Payment for missed unpaid time. The full unpaid cost is displayed only when using paygw_bepaid, paygw_robokassa, paygw_yookassa. In other payment gateways this mode will require making several consecutive payments.
+* Manual enrol and unenrol users.
 
 By enabling the appropriate settings, you can limit the time of paid registration of students for the course. After the set time, access to the course is suspended and can be resumed by re-payment. Course payment is available for suspended students, unlike other plugins.
 
