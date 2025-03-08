@@ -42,7 +42,7 @@ $canunenrol = has_capability('enrol/yafee:unenrol', $context);
 // Note: manage capability not used here because it is used for editing
 // of existing enrolments which is not possible here.
 
-if (!$canenrol and !$canunenrol) {
+if (!$canenrol || !$canunenrol) {
     // No need to invent new error strings here...
     require_capability('enrol/yafee:enrol', $context);
     require_capability('enrol/yafee:unenrol', $context);
@@ -181,8 +181,6 @@ if ($canenrol && optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) 
 
         $potentialuserselector->invalidate_selected_users();
         $currentuserselector->invalidate_selected_users();
-
-        // TODO: log
     }
 }
 
@@ -196,8 +194,6 @@ if ($canunenrol && optional_param('remove', false, PARAM_BOOL) && confirm_sesske
 
         $potentialuserselector->invalidate_selected_users();
         $currentuserselector->invalidate_selected_users();
-
-        // TODO: log
     }
 }
 
