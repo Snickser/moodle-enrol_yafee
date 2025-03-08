@@ -357,5 +357,12 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
   </table>
 </div></form>
 <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
 
 echo $OUTPUT->footer();
