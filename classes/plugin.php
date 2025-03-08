@@ -94,11 +94,20 @@ class enrol_yafee_plugin extends enrol_plugin {
 
     /**
      *
+     * @return boolean
+     */
+    public function allow_enrol(stdClass $instance) {
+        // Users with enrol cap may unenrol other users manually manually.
+        return true;
+    }
+
+    /**
+     *
      * @param stdClass $instance
      * @return boolean
      */
     public function allow_unenrol(stdClass $instance) {
-        // Users with unenrol cap may unenrol other users manually - requires enrol/fee:unenrol.
+        // Users with unenrol cap may unenrol other users manually - requires enrol/yafee:unenrol.
         return true;
     }
 
@@ -108,7 +117,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      * @return boolean
      */
     public function allow_manage(stdClass $instance) {
-        // Users with manage cap may tweak period and status - requires enrol/fee:manage.
+        // Users with manage cap may tweak period and status - requires enrol/yafee:manage.
         return true;
     }
 
@@ -119,6 +128,97 @@ class enrol_yafee_plugin extends enrol_plugin {
      */
     public function show_enrolme_link(stdClass $instance) {
         return ($instance->status == ENROL_INSTANCE_ENABLED);
+    }
+
+    /**
+     * Returns link to manual enrol UI if exists.
+     * Does the access control tests automatically.
+     *
+     * @param stdClass $instance
+     * @return moodle_url
+     */
+    public function get_manual_enrol_link($instance) {
+        $name = $this->get_name();
+        if ($instance->enrol !== $name) {
+            throw new coding_exception('invalid enrol instance!');
+        }
+
+        if (!enrol_is_enabled($name)) {
+            return null;
+        }
+
+        $context = context_course::instance($instance->courseid, MUST_EXIST);
+
+        if (!has_capability('enrol/yafee:enrol', $context)) {
+            // Note: manage capability not used here because it is used for editing
+            // of existing enrolments which is not possible here.
+            return null;
+        }
+
+        return new moodle_url('/enrol/yafee/manage.php', ['enrolid' => $instance->id, 'id' => $instance->courseid]);
+    }
+
+    /**
+     * Returns edit icons for the page with list of instances.
+     * @param stdClass $instance
+     * @return array
+     */
+    public function get_action_icons(stdClass $instance) {
+        global $OUTPUT;
+
+        $context = context_course::instance($instance->courseid);
+
+        $icons = [];
+        if (has_capability('enrol/yafee:enrol', $context) or has_capability('enrol/yafee:unenrol', $context)) {
+            $managelink = new moodle_url("/enrol/yafee/manage.php", ['enrolid' => $instance->id]);
+            $icons[] = $OUTPUT->action_icon($managelink, new pix_icon('t/enrolusers', get_string('enrolusers', 'enrol_manual'), 'core', ['class' => 'iconsmall']));
+        }
+        $parenticons = parent::get_action_icons($instance);
+        $icons = array_merge($icons, $parenticons);
+
+        return $icons;
+    }
+
+    /**
+     * Returns a button to manually enrol users through the manual enrolment plugin.
+     *
+     * By default the first manual enrolment plugin instance available in the course is used.
+     * If no manual enrolment instances exist within the course then false is returned.
+     *
+     * @param course_enrolment_manager $manager
+     * @return enrol_user_button
+     */
+    public function get_manual_enrol_button(course_enrolment_manager $manager) {
+        global $CFG, $PAGE;
+        require_once($CFG->dirroot . '/cohort/lib.php');
+
+        static $called = false;
+
+        $instance = null;
+        foreach ($manager->get_enrolment_instances() as $tempinstance) {
+            if ($tempinstance->enrol == 'yafee') {
+                if ($instance === null) {
+                    $instance = $tempinstance;
+                }
+            }
+        }
+        if (empty($instance)) {
+            return false;
+        }
+
+        $link = $this->get_manual_enrol_link($instance);
+        if (!$link) {
+            return false;
+        }
+
+        $button = new enrol_user_button($link, get_string('pluginname', 'enrol_yafee'), 'get');
+        $button->class .= ' enrol_yafee_plugin';
+        $button->type = single_button::BUTTON_PRIMARY;
+
+        $context = context_course::instance($instance->courseid);
+        $arguments = ['contextid' => $context->id];
+
+        return $button;
     }
 
     /**

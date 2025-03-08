@@ -34,6 +34,15 @@ $capabilities = [
         ],
     ],
 
+    'enrol/yafee:enrol' => [
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+        ],
+    ],
+
     'enrol/yafee:manage' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
