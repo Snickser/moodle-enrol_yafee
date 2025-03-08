@@ -64,7 +64,7 @@ if (!$enrolyafee = enrol_get_plugin('yafee')) {
 }
 
 $url = new moodle_url('/enrol/yafee/manage.php', ['enrolid' => $instance->id]);
-$title = get_string('managemanualenrolements', 'enrol_manual');
+$title = get_string('managemanualenrolements', 'enrol_yafee');
 
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('admin');
