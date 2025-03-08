@@ -52,7 +52,7 @@ if ($ADMIN->fulltree) {
         'enrol_yafee/expiredaction',
         get_string('expiredaction', 'enrol_yafee'),
         get_string('expiredaction_help', 'enrol_yafee'),
-        ENROL_EXT_REMOVED_SUSPENDNOROLES,
+        ENROL_EXT_REMOVED_KEEP,
         $options
     ));
 
