@@ -204,48 +204,172 @@ $addenabled = $canenrol ? '' : 'disabled="disabled"';
 $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
 
 ?>
-<form id="assignform" method="post" action="<?php echo $PAGE->url ?>"><div>
-  <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
-
+<form id="assignform" method="post" action="<?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+    echo $PAGE->url ?>"><div>
+  <input type="hidden" name="sesskey" value="<?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+    echo sesskey() ?>"/>
   <table summary="" class="roleassigntable generaltable generalbox boxaligncenter" cellspacing="0">
     <tr>
       <td id="existingcell">
-          <p><label for="removeselect"><?php print_string('enrolledusers', 'enrol'); ?></label></p>
-          <?php $currentuserselector->display() ?>
-      </td>
+          <p><label for="removeselect"><?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+            print_string('enrolledusers', 'enrol'); ?></label></p>
+          <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                $currentuserselector->display() ?>
+        </td>
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2024 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
       <td id="buttonscell">
           <div id="addcontrols">
-              <input class="btn btn-secondary" name="add" <?php echo $addenabled; ?> id="add" type="submit"
-                     value="<?php echo $OUTPUT->larrow() . '&nbsp;' . get_string('add'); ?>"
-                     title="<?php print_string('add'); ?>" /><br />
+              <input class="btn btn-secondary" name="add" <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                echo $addenabled; ?> id="add" type="submit"
+                     value="<?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                        echo $OUTPUT->larrow() . '&nbsp;' . get_string('add'); ?>"
+                        title="<?php print_string('add'); ?>" /><br />
 
               <div class="enroloptions">
 
-              <p><label for="menuroleid"><?php print_string('assignrole', 'enrol_manual') ?></label><br />
-              <?php echo html_writer::select($roles, 'roleid', $roleid, false); ?></p>
-
-              <p><label for="menuextendperiod"><?php print_string('enrolperiod', 'enrol') ?></label><br />
-              <?php echo html_writer::select($periodmenu, 'extendperiod', $defaultperiod, $unlimitedperiod); ?></p>
+              <p><label for="menuroleid"><?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                print_string('assignrole', 'enrol_manual') ?></label><br />
+              <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                echo html_writer::select($roles, 'roleid', $roleid, false); ?></p>
+              <p><label for="menuextendperiod"><?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                php print_string('enrolperiod', 'enrol') ?></label><br />
+              <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                echo html_writer::select($periodmenu, 'extendperiod', $defaultperiod, $unlimitedperiod); ?></p>
 
               <p><label for="menuextendbase"><?php print_string('startingfrom') ?></label><br />
-              <?php echo html_writer::select($basemenu, 'extendbase', $extendbase, false); ?></p>
+              <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                echo html_writer::select($basemenu, 'extendbase', $extendbase, false); ?></p>
 
               </div>
           </div>
 
           <div id="removecontrols">
-              <input class="btn btn-secondary" name="remove" id="remove" <?php echo $removeenabled; ?> type="submit"
+              <input class="btn btn-secondary" name="remove" id="remove" <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+                echo $removeenabled; ?> type="submit"
                      value="<?php echo get_string('remove') . '&nbsp;' . $OUTPUT->rarrow(); ?>"
                      title="<?php print_string('remove'); ?>" />
           </div>
       </td>
       <td id="potentialcell">
-          <p><label for="addselect"><?php print_string('enrolcandidates', 'enrol'); ?></label></p>
-          <?php $potentialuserselector->display() ?>
+          <p><label for="addselect"><?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+            print_string('enrolcandidates', 'enrol'); ?></label></p>
+          <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+            $potentialuserselector->display() ?>
       </td>
     </tr>
   </table>
 </div></form>
 <?php
+    /**
+     * Fake
+     *
+     * @package    enrol_yafee
+     * @copyright 2025 Alex Orlov <snickser@gmail.com>
+     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
 
 echo $OUTPUT->footer();
