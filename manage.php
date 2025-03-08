@@ -244,13 +244,6 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
      */
                 $currentuserselector->display() ?>
         </td>
-    /**
-     * Fake
-     *
-     * @package    enrol_yafee
-     * @copyright 2024 Alex Orlov <snickser@gmail.com>
-     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-     */
       <td id="buttonscell">
           <div id="addcontrols">
               <input class="btn btn-secondary" name="add" <?php
@@ -301,7 +294,7 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
      * @copyright 2025 Alex Orlov <snickser@gmail.com>
      * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
      */
-                php print_string('enrolperiod', 'enrol') ?></label><br />
+                print_string('enrolperiod', 'enrol') ?></label><br />
               <?php
     /**
      * Fake
