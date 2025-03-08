@@ -62,7 +62,7 @@ To extend their enrolment, go to {$a->extendurl}';
 $string['expirymessageenrollersubject'] = 'Fee enrolment expiry notification';
 $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
-$string['extremovedsuspendnoroles'] = 'Suspend course enrolment';
+$string['extremovedsuspendnoroles'] = 'Suspend course enrolment and delete roles';
 $string['forcepayment'] = 'Ignore enrollment deadlines';
 $string['forcepayment_help'] = 'If set, the payment form available via the link during the notification threshold period will be available regardless of the course enrollment start or end dates set. For example, when the course enrollment is already closed, previously enrolled students will be able to continue paying for their tuition.';
 $string['freetrial'] = 'Free trial of training';
