@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/enrol/manual/locallib.php');
 $enrolid      = required_param('enrolid', PARAM_INT);
 $roleid       = optional_param('roleid', -1, PARAM_INT);
 $extendperiod = optional_param('extendperiod', 0, PARAM_INT);
-$extendbase   = optional_param('extendbase', 4, PARAM_INT);
+$extendbase   = optional_param('extendbase', 6, PARAM_INT);
 $timeend      = optional_param_array('timeend', [], PARAM_INT);
 
 $instance = $DB->get_record('enrol', ['id' => $enrolid, 'enrol' => 'yafee'], '*', MUST_EXIST);
@@ -36,6 +36,7 @@ $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXI
 $context = context_course::instance($course->id, MUST_EXIST);
 
 require_login($course);
+
 $canenrol = has_capability('enrol/yafee:enrol', $context);
 $canunenrol = has_capability('enrol/yafee:unenrol', $context);
 
@@ -96,12 +97,7 @@ $basemenu[4] = get_string('month') . ' (' . userdate($thismonth, $dateformat) . 
 $basemenu[5] = get_string('today') . ' (' . userdate($today, $dateformat) . ')';
 $basemenu[6] = get_string('now', 'enrol_manual') . ' (' . userdate($now, get_string('strftimedatetimeshort')) . ')';
 
-if (empty($extendbase)) {
-    if (!$extendbase = get_config('enrol_manual', 'enrolstart')) {
-        // Default today if there is no system setting.
-        $extendbase = 4;
-    }
-}
+// Set start time.
 switch ($extendbase) {
     case 2:
         $timestart = $course->startdate;
@@ -131,15 +127,20 @@ $period = 0;
 if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
     $period = strtotime('+' . $instance->customint7 . 'month', $timestart) - $timestart;
     $periodmenu[$period] = $instance->customint7 . ' ' . get_string('month');
+    $extendbase = 4;
 } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
     $period = strtotime('+' . $instance->customint7 . 'year', $timestart) - $timestart;
     $periodmenu[$period] = $instance->customint7 . ' ' . get_string('year');
+    $extendbase = 3;
 } else if ($instance->enrolperiod > 86400 * 7) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numweeks', '', round($instance->enrolperiod * 2 / (86400 * 7)));
+    $extendbase = 5;
 } else if ($instance->enrolperiod > 86400) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numdays', '', round($instance->enrolperiod * 2 / 86400));
+    $extendbase = 5;
 } else if ($instance->enrolperiod > 3600) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numhours', '', round($instance->enrolperiod * 2 / 3600));
+    $extendbase = 6;
 }
 
 if ($period) {
