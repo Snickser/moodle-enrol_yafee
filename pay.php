@@ -50,12 +50,14 @@ $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
 $PAGE->set_pagelayout('course');
 $PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
-$PAGE->set_secondary_navigation(false);
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_cacheable(false);
-$PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
+
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
+
+$PAGE->navbar->add($course->fullname, '/enrol/index.php?id=' . $course->id);
+$PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
 
 echo $OUTPUT->header();
 
