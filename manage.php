@@ -36,6 +36,7 @@ $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXI
 $context = context_course::instance($course->id, MUST_EXIST);
 
 require_login($course);
+
 $canenrol = has_capability('enrol/yafee:enrol', $context);
 $canunenrol = has_capability('enrol/yafee:unenrol', $context);
 
