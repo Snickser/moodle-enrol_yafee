@@ -201,7 +201,6 @@ if ($canunenrol && optional_param('remove', false, PARAM_BOOL) && confirm_sesske
     }
 }
 
-
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 

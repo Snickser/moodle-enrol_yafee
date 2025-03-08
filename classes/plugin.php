@@ -94,6 +94,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
     /**
      *
+     * @param stdClass $instance
      * @return boolean
      */
     public function allow_enrol(stdClass $instance) {
@@ -169,9 +170,14 @@ class enrol_yafee_plugin extends enrol_plugin {
         $context = context_course::instance($instance->courseid);
 
         $icons = [];
-        if (has_capability('enrol/yafee:enrol', $context) or has_capability('enrol/yafee:unenrol', $context)) {
+        if (has_capability('enrol/yafee:enrol', $context) || has_capability('enrol/yafee:unenrol', $context)) {
             $managelink = new moodle_url("/enrol/yafee/manage.php", ['enrolid' => $instance->id]);
-            $icons[] = $OUTPUT->action_icon($managelink, new pix_icon('t/enrolusers', get_string('enrolusers', 'enrol_manual'), 'core', ['class' => 'iconsmall']));
+            $icons[] = $OUTPUT->action_icon($managelink, new pix_icon(
+                't/enrolusers',
+                get_string('enrolusers', 'enrol_manual'),
+                'core',
+                ['class' => 'iconsmall']
+            ));
         }
         $parenticons = parent::get_action_icons($instance);
         $icons = array_merge($icons, $parenticons);
