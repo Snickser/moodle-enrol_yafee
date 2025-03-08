@@ -170,6 +170,9 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirynotify']    = $expirynotify;
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
+        $fields['customint1']      = 0; // Payment account.
+        $fields['customint2']      = 0;
+        $fields['customint3']      = 1; // New enrolments.
         $fields['customint4']      = 0; // Force-payment enabler.
         $fields['customint5']      = 0; // Uninterrupt enabler.
         $fields['customint6']      = 0; // Trial seconds.
@@ -296,6 +299,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         global $USER, $OUTPUT, $DB;
 
         ob_start();
+
+        if (!$instance->customint3) {
+                return ob_get_clean();
+        }
 
         if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
             if ($data->status) {
@@ -529,6 +536,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'status', get_string('status', 'enrol_yafee'), $options);
         $mform->setDefault('status', $this->get_config('status'));
 
+        $mform->addElement('selectyesno', 'customint3', get_string('newenrols', 'enrol_yafee'));
+        $mform->setDefault('customint3', true);
+        $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
+
         $accounts = \core_payment\helper::get_payment_accounts_menu($context);
         if ($accounts) {
             $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
@@ -703,6 +714,8 @@ class enrol_yafee_plugin extends enrol_plugin {
             'expirynotify' => $validexpirynotify,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
+            'customint1' => PARAM_INT,
+            'customint3' => PARAM_INT,
             'customint4' => PARAM_INT,
             'customint5' => PARAM_INT,
             'customint6' => PARAM_INT,
