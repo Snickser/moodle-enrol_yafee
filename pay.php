@@ -27,7 +27,7 @@
 use core_payment\helper;
 
 require_once(__DIR__ . '/../../config.php');
-global $USER, $DB;
+global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -41,7 +41,7 @@ $context = context_course::instance($course->id, MUST_EXIST);
 $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
 
 // For enrolled users only.
-if (!is_enrolled($context, $USER, '', false) || !confirm_sesskey()) {
+if (!is_enrolled($context, $USER, '', false)) {
     redirect($CFG->wwwroot . '/enrol/index.php?id=' . $course->id);
 }
 
@@ -56,6 +56,7 @@ $PAGE->set_cacheable(false);
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 
+$PAGE->navbar->add(get_string('courses'));
 $PAGE->navbar->add($course->fullname, '/enrol/index.php?id=' . $course->id);
 $PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
 
