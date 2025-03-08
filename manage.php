@@ -60,11 +60,11 @@ if (!isset($roles[$roleid])) {
 }
 
 if (!$enrolyafee = enrol_get_plugin('yafee')) {
-    throw new coding_exception('Can not instantiate enrol_manual');
+    throw new coding_exception('Can not instantiate enrol_yafee');
 }
 
 $url = new moodle_url('/enrol/yafee/manage.php', ['enrolid' => $instance->id]);
-$title = get_string('managemanualenrolements', 'enrol_manual');
+$title = get_string('managemanualenrolements', 'enrol_yafee');
 
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('admin');

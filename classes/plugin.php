@@ -216,8 +216,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (!$link) {
             return false;
         }
-
-        $button = new enrol_user_button($link, get_string('pluginname', 'enrol_yafee'), 'get');
+        if (empty($instance->name)) {
+            $instance->name = get_string('managemanualenrolements', 'enrol_yafee');
+        }
+        $button = new enrol_user_button($link, $instance->name, 'get');
         $button->class .= ' enrol_yafee_plugin';
         $button->type = single_button::BUTTON_PRIMARY;
 

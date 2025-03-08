@@ -68,6 +68,7 @@ $string['freetrial'] = 'Бесплатная пробная запись';
 $string['freetrial_desc'] = 'Доступно ознакомительное время';
 $string['freetrial_help'] = 'Позволяет пользователю открыть курс один раз на определенный период времени без оплаты.';
 $string['freetrialbutton'] = 'Войти';
+$string['managemanualenrolements'] = 'Зачисление пользователей YaFee';
 $string['menuname'] = '<font color=red><b>Оплатить курс</b></font>';
 $string['menunameshort'] = '<font color=red><b>Оплатить курс</b></font>';
 $string['messageprovider:expiry_notification'] = 'Уведомления об истечении срока обучения при самостоятельной записи';
