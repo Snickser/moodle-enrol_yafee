@@ -97,7 +97,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      * @return boolean
      */
     public function allow_enrol(stdClass $instance) {
-        // Users with enrol cap may unenrol other users manually manually.
+        // Users with enrol cap may enrol other users manually - requires enrol/yafee:enrol.
         return true;
     }
 
