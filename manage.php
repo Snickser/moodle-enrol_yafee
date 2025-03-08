@@ -226,22 +226,22 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
     <tr>
       <td id="existingcell">
           <p><label for="removeselect"><?php
-    /**
-     * Fake
-     *
-     * @package    enrol_yafee
-     * @copyright 2025 Alex Orlov <snickser@gmail.com>
-     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-     */
+            /**
+             * Fake
+             *
+             * @package    enrol_yafee
+             * @copyright 2025 Alex Orlov <snickser@gmail.com>
+             * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+             */
             print_string('enrolledusers', 'enrol'); ?></label></p>
           <?php
-    /**
-     * Fake
-     *
-     * @package    enrol_yafee
-     * @copyright 2025 Alex Orlov <snickser@gmail.com>
-     * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-     */
+            /**
+             * Fake
+             *
+             * @package    enrol_yafee
+             * @copyright 2025 Alex Orlov <snickser@gmail.com>
+             * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+             */
                 $currentuserselector->display() ?>
         </td>
       <td id="buttonscell">
