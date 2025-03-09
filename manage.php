@@ -82,17 +82,22 @@ $currentuserselector = new enrol_manual_current_participant('removeselect', $opt
 
 // Build the list of options for the starting from dropdown.
 $now = time();
-$twk = strtotime('this week');
 $today = make_timestamp(date('Y', $now), date('m', $now), date('d', $now), 0, 0, 0);
-$thisweek = make_timestamp(date('Y', $twk), date('m', $twk), date('d', $twk), 0, 0, 0);
 $thismonth = make_timestamp(date('Y', $now), date('m', $now), 1, 0, 0, 0);
 $thisyear = make_timestamp(date('Y', $now), 1, 1, 0, 0, 0);
-$ndy = strtotime('tomorrow');
-$tomorrow = make_timestamp(date('Y', $ndy), date('m', $ndy), date('d', $ndy), 0, 0, 0);
-$nwk = strtotime('next week');
-$nextweek = make_timestamp(date('Y', $nwk), date('m', $nwk), date('d', $nwk), 0, 0, 0);
-$nmt = strtotime('next month');
-$nextmonth = make_timestamp(date('Y', $nmt), date('m', $nmt), 1, 0, 0, 0);
+
+$once = strtotime('this week');
+$thisweek = make_timestamp(date('Y', $once), date('m', $once), date('d', $once), 0, 0, 0);
+
+$once = strtotime('tomorrow');
+$tomorrow = make_timestamp(date('Y', $once), date('m', $once), date('d', $once), 0, 0, 0);
+
+$once = strtotime('next week');
+$nextweek = make_timestamp(date('Y', $once), date('m', $once), date('d', $once), 0, 0, 0);
+
+$once = strtotime('next month');
+$nextmonth = make_timestamp(date('Y', $once), date('m', $once), 1, 0, 0, 0);
+
 $dateformat = '%d %b %Y';
 
 // Enrolment start.
