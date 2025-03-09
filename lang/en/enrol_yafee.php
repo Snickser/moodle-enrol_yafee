@@ -91,6 +91,7 @@ $string['showduration'] = 'Show duration of training';
 $string['status'] = 'Allow enrolment on payment enrolments';
 $string['status_desc'] = 'Allow users to make a payment to enrol into a course by default.';
 $string['syncenrolmentstask'] = 'Synchronise fee enrolments task';
+$string['thisyear'] = 'This year';
 $string['uninterrupted'] = 'Pay for missed time';
 $string['uninterrupted_desc'] = 'The price for the course is formed taking into account the missed time of the period you have not paid for.';
 $string['uninterrupted_help'] = 'The cost of the break from the last payment is added to the course fee. Only works in courses with a set duration of study.';

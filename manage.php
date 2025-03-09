@@ -82,9 +82,17 @@ $currentuserselector = new enrol_manual_current_participant('removeselect', $opt
 
 // Build the list of options for the starting from dropdown.
 $now = time();
+$twk = strtotime('this week');
 $today = make_timestamp(date('Y', $now), date('m', $now), date('d', $now), 0, 0, 0);
-$thisyear = make_timestamp(date('Y', $now), 1, 1, 0, 0, 0);
+$thisweek = make_timestamp(date('Y', $twk), date('m', $twk), date('d', $twk), 0, 0, 0);
 $thismonth = make_timestamp(date('Y', $now), date('m', $now), 1, 0, 0, 0);
+$thisyear = make_timestamp(date('Y', $now), 1, 1, 0, 0, 0);
+$ndy = strtotime('tomorrow');
+$tomorrow = make_timestamp(date('Y', $ndy), date('m', $ndy), date('d', $ndy), 0, 0, 0);
+$nwk = strtotime('next week');
+$nextweek = make_timestamp(date('Y', $nwk), date('m', $nwk), date('d', $nwk), 0, 0, 0);
+$nmt = strtotime('next month');
+$nextmonth = make_timestamp(date('Y', $nmt), date('m', $nmt), 1, 0, 0, 0);
 $dateformat = '%d %b %Y';
 
 // Enrolment start.
@@ -92,10 +100,14 @@ $basemenu = [];
 if ($course->startdate > 0) {
     $basemenu[2] = get_string('coursestart') . ' (' . userdate($course->startdate, $dateformat) . ')';
 }
-$basemenu[3] = get_string('year') . ' (' . userdate($thisyear, $dateformat) . ')';
-$basemenu[4] = get_string('month') . ' (' . userdate($thismonth, $dateformat) . ')';
-$basemenu[5] = get_string('today') . ' (' . userdate($today, $dateformat) . ')';
-$basemenu[6] = get_string('now', 'enrol_manual') . ' (' . userdate($now, get_string('strftimedatetimeshort')) . ')';
+$basemenu[3] = get_string('thisyear', 'enrol_yafee') . ' (' . userdate($thisyear, $dateformat) . ')';
+$basemenu[4] = get_string('monththis', 'calendar') . ' (' . userdate($thismonth, $dateformat) . ')';
+$basemenu[5] = get_string('weekthis', 'calendar') . ' (' . userdate($thisweek, $dateformat) . ')';
+$basemenu[6] = get_string('today') . ' (' . userdate($today, $dateformat) . ')';
+$basemenu[7] = get_string('now', 'enrol_manual') . ' (' . userdate($now, get_string('strftimedatetimeshort')) . ')';
+$basemenu[8] = get_string('tomorrow', 'calendar'). ' (' . userdate($tomorrow, $dateformat) . ')';
+$basemenu[9] = get_string('weeknext', 'calendar'). ' (' . userdate($nextweek, $dateformat) . ')';
+$basemenu[10] = get_string('monthnext', 'calendar'). ' (' . userdate($nextmonth, $dateformat) . ')';
 
 // Set start time.
 switch ($extendbase) {
@@ -108,10 +120,22 @@ switch ($extendbase) {
     case 4:
         $timestart = $thismonth;
         break;
-    case 6:
+    case 5:
+        $timestart = $thisweek;
+        break;
+    case 7:
         $timestart = $now;
         break;
-    case 5:
+    case 8:
+        $timestart = $tomorrow;
+        break;
+    case 9:
+        $timestart = $nextweek;
+        break;
+    case 10:
+        $timestart = $nextmonth;
+        break;
+    case 6:
     default:
         $timestart = $today;
         break;
@@ -127,20 +151,15 @@ $period = 0;
 if ($instance->customchar1 == 'month' && $instance->customint7 > 0) {
     $period = strtotime('+' . $instance->customint7 . 'month', $timestart) - $timestart;
     $periodmenu[$period] = $instance->customint7 . ' ' . get_string('month');
-    $extendbase = 4;
 } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0) {
     $period = strtotime('+' . $instance->customint7 . 'year', $timestart) - $timestart;
     $periodmenu[$period] = $instance->customint7 . ' ' . get_string('year');
-    $extendbase = 3;
-} else if ($instance->enrolperiod > 86400 * 7) {
+} else if ($instance->enrolperiod >= 86400 * 7) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numweeks', '', round($instance->enrolperiod * 2 / (86400 * 7)));
-    $extendbase = 5;
-} else if ($instance->enrolperiod > 86400) {
+} else if ($instance->enrolperiod >= 86400) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numdays', '', round($instance->enrolperiod * 2 / 86400));
-    $extendbase = 5;
-} else if ($instance->enrolperiod > 3600) {
+} else if ($instance->enrolperiod >= 3600) {
     $periodmenu[$instance->enrolperiod * 2] = get_string('numhours', '', round($instance->enrolperiod * 2 / 3600));
-    $extendbase = 6;
 }
 
 if ($period) {
