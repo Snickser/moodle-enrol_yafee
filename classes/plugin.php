@@ -281,11 +281,11 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['customint1']      = 0; // Payment account.
         $fields['customint2']      = 0;
         $fields['customint3']      = $this->get_config('newenrols');
-        $fields['customint4']      = 0; // Force-payment enabler.
+        $fields['customint4']      = $this->get_config('forcepayment');
         $fields['customint5']      = 0; // Uninterrupt enabler.
-        $fields['customint6']      = 0; // Trial seconds.
+        $fields['customint6']      = $this->get_config('freetrial');
         $fields['customint7']      = 0; // Number periods of customchar1.
-        $fields['customint8']      = 0; // Showduration enabler.
+        $fields['customint8']      = $this->get_config('showduration');
         $fields['customchar1']     = 'minute'; // Types of periods.
 
         return $fields;
@@ -713,7 +713,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         // Check allowed paygws.
         $uninterrupted = false;
-        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa'] as $value) {
+        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa', 'paygw_bank'] as $value) {
             if ($plugin = \core_plugin_manager::instance()->get_plugin_info($value)) {
                 if ($plugin->versiondisk > 2025023000) {
                     $uninterrupted = true;
