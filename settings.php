@@ -84,13 +84,23 @@ if ($ADMIN->fulltree) {
         $options
     ));
 
+    $options = [1 => get_string('yes'),
+                0 => get_string('no')];
+    $settings->add(new admin_setting_configselect(
+        'enrol_yafee/newenrols',
+        get_string('newenrols', 'enrol_yafee'),
+        get_string('newenrols_desc', 'enrol_yafee'),
+        0,
+        $options
+    ));
+
     if (!empty($currencies)) {
         $settings->add(new admin_setting_configtext('enrol_yafee/cost', get_string('cost', 'enrol_yafee'), '', 0, PARAM_FLOAT, 4));
         $settings->add(new admin_setting_configselect(
             'enrol_yafee/currency',
             get_string('currency', 'enrol_yafee'),
             '',
-            'USD',
+            'RUB',
             $currencies
         ));
     }
