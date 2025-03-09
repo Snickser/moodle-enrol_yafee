@@ -119,10 +119,25 @@ if ($ADMIN->fulltree) {
     }
 
     $settings->add(new admin_setting_configduration(
+        'enrol_yafee/freetrial',
+        get_string('freetrial', 'enrol_yafee'),
+        get_string('freetrial_help', 'enrol_yafee'),
+        0,
+        0
+    ));
+
+    $settings->add(new admin_setting_configduration(
         'enrol_yafee/enrolperiod',
         get_string('enrolperiod', 'enrol_yafee'),
         get_string('enrolperiod_desc', 'enrol_yafee'),
         0,
+        0
+    ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'enrol_yafee/showduration',
+        get_string('showduration', 'enrol_yafee'),
+        get_string('showduration', 'enrol_yafee'),
         0
     ));
 
@@ -143,5 +158,19 @@ if ($ADMIN->fulltree) {
         get_string('expirythreshold_help', 'core_enrol'),
         86400,
         86400
+    ));
+
+    $options = [
+         0 => get_string('no'),
+         1 => get_string('enrolstartdate', 'enrol_yafee'),
+         2 => get_string('enrolenddate', 'enrol_yafee'),
+         3 => get_string('always'),
+    ];
+    $settings->add(new admin_setting_configselect(
+        'enrol_yafee/forcepayment',
+        get_string('forcepayment', 'enrol_yafee'),
+        get_string('forcepayment', 'enrol_yafee'),
+        0,
+        $options
     ));
 }
