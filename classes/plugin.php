@@ -280,7 +280,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
         $fields['customint1']      = 0; // Payment account.
         $fields['customint2']      = 0;
-        $fields['customint3']      = 1; // New enrolments.
+        $fields['customint3']      = $this->get_config('newenrols');
         $fields['customint4']      = 0; // Force-payment enabler.
         $fields['customint5']      = 0; // Uninterrupt enabler.
         $fields['customint6']      = 0; // Trial seconds.
@@ -802,7 +802,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         $cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
-        if (!is_numeric($cost) || $cost < 0 || $cost == 0) {
+        if (!is_numeric($cost) || $cost <= 0) {
             $errors['cost'] = get_string('costerror', 'enrol_yafee');
         }
 
