@@ -48,7 +48,7 @@ $string['enrolperiod_help'] = 'Length of time that the enrolment is valid, start
 $string['enrolstartdate'] = 'Start date';
 $string['enrolstartdate_help'] = 'If enabled, users can only be enrolled from this date onwards.';
 $string['expiredaction'] = 'Enrolment expiry action';
-$string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is unenrolled.';
+$string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is suspended or unenrolled. For suspend or delete function you must enable \enrol_yafee\task\sync_enrolments task in Moodle scheduler.';
 $string['expirymessageenrolledbody'] = 'Dear {$a->user},
 
 This is a notification that your enrolment in the course \'{$a->course}\' is due to expire on {$a->timeend}.
