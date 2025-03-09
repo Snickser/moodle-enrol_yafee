@@ -110,9 +110,9 @@ $basemenu[4] = get_string('monththis', 'calendar') . ' (' . userdate($thismonth,
 $basemenu[5] = get_string('weekthis', 'calendar') . ' (' . userdate($thisweek, $dateformat) . ')';
 $basemenu[6] = get_string('today') . ' (' . userdate($today, $dateformat) . ')';
 $basemenu[7] = get_string('now', 'enrol_manual') . ' (' . userdate($now, get_string('strftimedatetimeshort')) . ')';
-$basemenu[8] = get_string('tomorrow', 'calendar'). ' (' . userdate($tomorrow, $dateformat) . ')';
-$basemenu[9] = get_string('weeknext', 'calendar'). ' (' . userdate($nextweek, $dateformat) . ')';
-$basemenu[10] = get_string('monthnext', 'calendar'). ' (' . userdate($nextmonth, $dateformat) . ')';
+$basemenu[8] = get_string('tomorrow', 'calendar') . ' (' . userdate($tomorrow, $dateformat) . ')';
+$basemenu[9] = get_string('weeknext', 'calendar') . ' (' . userdate($nextweek, $dateformat) . ')';
+$basemenu[10] = get_string('monthnext', 'calendar') . ' (' . userdate($nextmonth, $dateformat) . ')';
 
 // Set start time.
 switch ($extendbase) {
