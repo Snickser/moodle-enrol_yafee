@@ -802,7 +802,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         $cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
-        if (!is_numeric($cost)) {
+        if (!is_numeric($cost) || $cost < 0.01) {
             $errors['cost'] = get_string('costerror', 'enrol_yafee');
         }
 
