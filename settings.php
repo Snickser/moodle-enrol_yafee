@@ -39,7 +39,11 @@ if ($ADMIN->fulltree) {
     $plugininfo = \core_plugin_manager::instance()->get_plugin_info('enrol_yafee');
     $donate = get_string('donate', 'enrol_yafee', $plugininfo);
 
-    $settings->add(new admin_setting_heading('enrol_yafee_settings', $donate, get_string('pluginname_desc', 'enrol_yafee')));
+    $settings->add(new admin_setting_heading(
+        'enrol_yafee_settings',
+        $donate,
+        get_string('pluginname_desc', 'enrol_yafee')
+    ));
 
     // Note: let's reuse the ext sync constants and strings here, internally it is very similar,
     // it describes what should happen when users are not supposed to be enrolled any more.
@@ -66,6 +70,14 @@ if ($ADMIN->fulltree) {
         '',
         6,
         $options
+    ));
+
+    $settings->add(new admin_setting_configduration(
+        'enrol_yafee/expirynotifyperiod',
+        get_string('expirynotifyperiod', 'enrol_yafee'),
+        get_string('expirynotifyperiod_desc', 'enrol_yafee'),
+        900,
+        900
     ));
 
     $settings->add(new admin_setting_heading(
@@ -95,7 +107,14 @@ if ($ADMIN->fulltree) {
     ));
 
     if (!empty($currencies)) {
-        $settings->add(new admin_setting_configtext('enrol_yafee/cost', get_string('cost', 'enrol_yafee'), '', 0, PARAM_FLOAT, 4));
+        $settings->add(new admin_setting_configtext(
+            'enrol_yafee/cost',
+            get_string('cost', 'enrol_yafee'),
+            '',
+            0,
+            PARAM_FLOAT,
+            4
+        ));
         $settings->add(new admin_setting_configselect(
             'enrol_yafee/currency',
             get_string('currency', 'enrol_yafee'),
