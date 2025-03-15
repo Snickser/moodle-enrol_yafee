@@ -47,6 +47,7 @@
         "enrolperiod_desc": "day",
         "freetrial": true,
         "sesskey": 234587628,
+        "unpaidperiod": "1",
         "uninterrupted": true
     }
 
@@ -73,7 +74,7 @@
 {{/freetrial}}
 
 {{#uninterrupted}}
- <h4>{{# str }} uninterrupted_desc, enrol_yafee {{/ str}}</h4>
+ <h4>{{# str }} uninterrupted_desc, enrol_yafee, {{unpaidperiods}} {{/ str}}</h4>
 {{/uninterrupted}}
 
 {{^freetrial}}
@@ -97,12 +98,7 @@
         </button>
 {{/freetrial}}
 
-
-
-
-
     {{/isguestuser}}
-
 
 </div>
 
