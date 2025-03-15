@@ -440,6 +440,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $enrolperiod = $instance->enrolperiod;
         $enrolperioddesc = '';
         $freetrial = false;
+        $unpaidperiods = 0;
         if ($instance->customint8 || $instance->customint6) {
             // Check first time trial.
             if (
@@ -463,6 +464,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 if ($instance->customint5) {
                     $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
                     $cost  = $delta * $cost;
+                    $unpaidperiods = $delta;
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
@@ -470,6 +472,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 if ($instance->customint5) {
                     $delta = $t2['year'] - $t1['year'] + 1;
                     $cost  = $delta * $cost;
+                    $unpaidperiods = $delta;
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
@@ -497,6 +500,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0.7) * $instance->enrolperiod +
                      $data->timestart - $data->timeend;
                 $cost  = $delta * $price;
+                $unpaidperiods = $delta / $instance->enrolperiod;
             }
         }
 
@@ -520,6 +524,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
                 'uninterrupted' => $instance->customint5,
+                'unpaidperiods' => $unpaidperiods,
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
