@@ -37,7 +37,7 @@ $tasks = [
     [
         'classname' => '\enrol_yafee\task\send_expiry_notifications',
         'blocking' => 0,
-        'minute' => '*/10',
+        'minute' => '*/15',
         'hour' => '*',
         'day' => '*',
         'month' => '*',
