@@ -48,7 +48,14 @@ $string['enrolperiod_help'] = 'Length of time that the enrolment is valid, start
 $string['enrolstartdate'] = 'Start date';
 $string['enrolstartdate_help'] = 'If enabled, users can only be enrolled from this date onwards.';
 $string['expiredaction'] = 'Enrolment expiry action';
-$string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is suspended or unenrolled. For suspend or delete function you must enable \enrol_yafee\task\sync_enrolments task in Moodle scheduler.';
+$string['expiredaction_help'] = 'Select the action to be performed when a user\'s enrolment expires. Please note that some user data and settings are deleted when a user is suspended or unenrolled. For suspend or unenrol function you must enable \enrol_yafee\task\sync_enrolments task in Moodle scheduler.';
+$string['expiredmessagebody'] = 'Dear {$a->fullname},
+
+This is a notification that your enrolment in the course \'{$a->course}\' has been suspended.
+
+To renew your enrolment, go to {$a->payurl}
+';
+$string['expiredmessagesubject'] = 'Expiry notice';
 $string['expirymessageenrolledbody'] = 'Dear {$a->user},
 
 This is a notification that your enrolment in the course \'{$a->course}\' is due to expire on {$a->timeend}.
@@ -63,6 +70,8 @@ To extend their enrolment, go to {$a->extendurl}';
 $string['expirymessageenrollersubject'] = 'Fee enrolment expiry notification';
 $string['expirynotifyall'] = 'Teacher and enrolled user';
 $string['expirynotifyenroller'] = 'Teacher only';
+$string['expirynotifyperiod'] = 'Suspension notification interval';
+$string['expirynotifyperiod_desc'] = 'Sending notifications about course suspension. This parameter must be equal to the execution period of the notification sending scheduler enrol_yafee\task\send_expiry_notifications, if less - messages will not be sent, if more - they will be sent several times.';
 $string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles';
 $string['forcepayment'] = 'Ignore enrollment deadlines';
 $string['forcepayment_help'] = 'If set, the payment form available via the link during the notification threshold period will be available regardless of the course enrollment start or end dates set. For example, when the course enrollment is already closed, previously enrolled students will be able to continue paying for their tuition.';
