@@ -529,7 +529,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
                 'uninterrupted' => $instance->customint5,
-                'unpaidperiods' => $unpaidperiods,
+                'unpaidperiods' => ceil($unpaidperiods),
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -674,7 +674,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
         $mform->addHelpButton('customint1', 'paymentaccount', 'enrol_yafee');
 
-        $mform->addElement('text', 'cost', get_string('cost', 'enrol_yafee'), ['size' => 4]);
+        $mform->addElement('text', 'cost', get_string('cost', 'enrol_yafee'), ['size' => 6]);
         $mform->setType('cost', PARAM_RAW);
         $mform->setDefault('cost', format_float($this->get_config('cost'), 2, true));
 
@@ -812,7 +812,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         $cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
-        if (!is_numeric($cost) || $cost <= 0) {
+        if (!is_numeric($cost) || $cost < 0.01 || round($cost, 2) != $cost) {
             $errors['cost'] = get_string('costerror', 'enrol_yafee');
         }
 
