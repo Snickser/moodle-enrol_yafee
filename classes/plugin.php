@@ -493,6 +493,11 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
+        // Show duration.
+        if (!isset($instance->customint8) || !$instance->customint8) {
+            $enrolperiod = 0;
+        }
+
         // Check uninterrupted cost.
         if (isset($data->timeend) || isset($data->timestart)) {
             if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
@@ -508,18 +513,13 @@ class enrol_yafee_plugin extends enrol_plugin {
             $instance->customint5 = 0;
         }
 
-        $course = $DB->get_record('course', ['id' => $instance->courseid]);
-        $context = context_course::instance($course->id);
-
         $currency = $instance->currency;
         if ($currency == 'BYR') {
             $currency = 'BYN';
         }
 
-        // Show duration.
-        if (!isset($instance->customint8) || !$instance->customint8) {
-            $enrolperiod = 0;
-        }
+        $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
+        $context = context_course::instance($course->id);
 
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
