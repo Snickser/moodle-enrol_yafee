@@ -516,6 +516,11 @@ class enrol_yafee_plugin extends enrol_plugin {
             $currency = 'BYN';
         }
 
+        // Show duration.
+        if (!isset($instance->customint8) || !$instance->customint8) {
+            $enrolperiod = 0;
+        }
+
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
         } else {
