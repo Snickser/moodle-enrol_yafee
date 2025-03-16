@@ -41,7 +41,7 @@ width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no">
 $string['enrolenddate'] = 'End date';
 $string['enrolenddate_help'] = 'If enabled, users can be enrolled until this date only.';
 $string['enrolenddaterror'] = 'The enrolment end date cannot be earlier than the start date.';
-$string['enrolperiod'] = 'Enrolment duration';
+$string['enrolperiod'] = 'Enrolment duration ({$a->desc}): {$a->count}';
 $string['enrolperiod_desc'] = 'Default length of time that the enrolment is valid. If set to zero, the enrolment duration
  will be unlimited by default.';
 $string['enrolperiod_help'] = 'Length of time that the enrolment is valid, starting with the moment the user is enrolled. If disabled, the enrolment duration will be unlimited.';
