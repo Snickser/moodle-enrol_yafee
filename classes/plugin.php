@@ -408,7 +408,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         ob_start();
 
-        if (!$instance->customint3) {
+        if (isset($instance->customint3) && !$instance->customint3) {
                 return ob_get_clean();
         }
 
@@ -529,7 +529,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
                 'uninterrupted' => $instance->customint5,
-                'unpaidperiods' => ceil($unpaidperiods),
+                'unpaidperiods' => floor($unpaidperiods),
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
