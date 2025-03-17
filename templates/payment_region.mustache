@@ -81,6 +81,11 @@
  {{#enrolperiod}}
   <h4>{{# str }} enrolperiod, enrol_yafee, { "count": {{enrolperiod}}, "desc": {{#quote}}{{enrolperiod_desc}}{{/quote}} } {{/ str}}</h4>
  {{/enrolperiod}}
+
+ {{#timeend}}
+  <h5>{{# str }} enrolperiodend, enrol_yafee, { "date": {{#quote}}{{dateend}}{{/quote}}, "time": {{#quote}}{{timeend}}{{/quote}} } {{/ str}}</h5>
+ {{/timeend}}
+
 </br>
         <button
             class="btn btn-primary"

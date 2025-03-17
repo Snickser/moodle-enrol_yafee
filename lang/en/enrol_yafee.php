@@ -45,6 +45,7 @@ $string['enrolperiod'] = 'Enrolment duration ({$a->desc}): {$a->count}';
 $string['enrolperiod_desc'] = 'Default length of time that the enrolment is valid. If set to zero, the enrolment duration
  will be unlimited by default.';
 $string['enrolperiod_help'] = 'Length of time that the enrolment is valid, starting with the moment the user is enrolled. If disabled, the enrolment duration will be unlimited.';
+$string['enrolperiodend'] = 'Renewing until {$a->date} {$a->time}';
 $string['enrolstartdate'] = 'Start date';
 $string['enrolstartdate_help'] = 'If enabled, users can only be enrolled from this date onwards.';
 $string['expiredaction'] = 'Enrolment expiry action';
