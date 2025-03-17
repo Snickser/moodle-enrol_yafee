@@ -41,8 +41,9 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_heading(
         'enrol_yafee_settings',
-        $donate,
-        get_string('pluginname_desc', 'enrol_yafee')
+        '',
+        $donate .
+        get_string('pluginname_desc', 'enrol_yafee'),
     ));
 
     // Note: let's reuse the ext sync constants and strings here, internally it is very similar,
