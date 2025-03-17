@@ -148,7 +148,7 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_configduration(
         'enrol_yafee/enrolperiod',
-        get_string('enrolperiod', 'enrol_yafee'),
+        get_string('enrolperiod', 'core_enrol'),
         get_string('enrolperiod_desc', 'enrol_yafee'),
         0,
         0
