@@ -441,7 +441,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $enrolperioddesc = '';
         $freetrial = false;
         $unpaidperiods = 0;
-        if ($instance->customint8 || $instance->customint6) {
+        if ($instance->customint6 || $instance->customint7) {
             // Check first time trial.
             if (
                 $instance->customint6 && !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
@@ -465,6 +465,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
                     $cost  = $delta * $cost;
                     $unpaidperiods = $delta;
+                    $timeend = strtotime('+' . $delta . 'month', $timeend);
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
@@ -473,10 +474,12 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $delta = $t2['year'] - $t1['year'] + 1;
                     $cost  = $delta * $cost;
                     $unpaidperiods = $delta;
+                    $timeend = strtotime('+' . $delta . 'year', $timeend);
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
             } else if ($enrolperiod > 0) {
+                $timeend += $enrolperiod;
                 if ($enrolperiod >= 86400 * 7) {
                     $enrolperioddesc = get_string('weeks');
                     $enrolperiod = round($enrolperiod / (86400 * 7));
@@ -502,10 +505,11 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (isset($data->timeend) || isset($data->timestart)) {
             if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
                 $price = $cost / $instance->enrolperiod;
-                $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0.7) * $instance->enrolperiod +
+                $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0) * $instance->enrolperiod +
                      $data->timestart - $data->timeend;
                 $cost  = $delta * $price;
                 $unpaidperiods = $delta / $instance->enrolperiod;
+                $timeend = $data->timeend + $delta;
             }
         }
 
@@ -524,12 +528,10 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
             echo '<p>' . get_string('nocost', 'enrol_yafee') . '</p>';
         } else {
-            $data = [
+            $template = [
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
-                'uninterrupted' => $instance->customint5,
-                'unpaidperiods' => floor($unpaidperiods),
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -541,7 +543,15 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'freetrial' => $freetrial,
                 'sesskey' => sesskey(),
             ];
-            echo $OUTPUT->render_from_template('enrol_yafee/payment_region', $data);
+            if ($unpaidperiods >= 2) {
+                $template['uninterrupted'] = $instance->customint5;
+                $template['unpaidperiods'] = floor($unpaidperiods);
+            }
+            if ($force && $data->timeend > time() || $unpaidperiods) {
+                $template['dateend'] = userdate($timeend, get_string('strftimedate', 'core_langconfig'));
+                $template['timeend'] = date('H:i', $timeend);
+            }
+            echo $OUTPUT->render_from_template('enrol_yafee/payment_region', $template);
         }
 
         return $OUTPUT->box(ob_get_clean());
