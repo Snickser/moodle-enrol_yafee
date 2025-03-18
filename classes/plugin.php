@@ -496,9 +496,12 @@ class enrol_yafee_plugin extends enrol_plugin {
             }
         }
 
-        // Show duration.
+        // Hide duration.
         if (!isset($instance->customint8) || !$instance->customint8) {
-            $enrolperiod = 0;
+            // Unless freetrial.
+            if (!$freetrial) {
+                $enrolperiod = 0;
+            }
         }
 
         // Check uninterrupted cost.
