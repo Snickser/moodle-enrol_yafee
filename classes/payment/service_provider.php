@@ -86,7 +86,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timeend   = $timestart;
 
         // Foolproof сheck, allowed gateways for uninterrupted payment.
-	$surcharge = 0;
+        $surcharge = 0;
         $allowedgateway = false;
         $gateways = ['bepaid', 'robokassa', 'yookassa', 'bank'];
         if ($payment = $DB->get_record('payments', ['id' => $paymentid])) {
@@ -133,7 +133,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
                     $periods = ceil((time() - $userdata->timestart) / $instance->enrolperiod);
                     // Payless mode.
                     if ($payment->amount > 0) {
-                        $fee = round($payment->amount/(1+$surcharge/100), 2);
+                        $fee = round($payment->amount / (1 + $surcharge / 100), 2);
                         $unpayed = ceil((time() - $userdata->timeend) / $instance->enrolperiod) -
                             $fee / $instance->cost;
                     } else {
