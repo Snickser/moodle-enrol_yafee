@@ -26,6 +26,8 @@
 
 namespace enrol_yafee\payment;
 
+use core_payment\helper;
+
 /**
  * Payment subsystem callback implementation for enrol_yafee.
  *
@@ -84,6 +86,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timeend   = $timestart;
 
         // Foolproof сheck, allowed gateways for uninterrupted payment.
+	$surcharge = 0;
         $allowedgateway = false;
         $gateways = ['bepaid', 'robokassa', 'yookassa', 'bank'];
         if ($payment = $DB->get_record('payments', ['id' => $paymentid])) {
@@ -93,6 +96,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
                     break;
                 }
             }
+            $surcharge = helper::get_gateway_surcharge($payment->gateway);
         }
 
         // Get time data.
@@ -129,8 +133,9 @@ class service_provider implements \core_payment\local\callback\service_provider 
                     $periods = ceil((time() - $userdata->timestart) / $instance->enrolperiod);
                     // Payless mode.
                     if ($payment->amount > 0) {
+                        $fee = round($payment->amount/(1+$surcharge/100), 2);
                         $unpayed = ceil((time() - $userdata->timeend) / $instance->enrolperiod) -
-                        $payment->amount / $instance->cost;
+                            $fee / $instance->cost;
                     } else {
                         $unpayed = 0;
                     }

@@ -77,7 +77,7 @@ $string['extremovedsuspendnoroles'] = 'Suspend course enrolment and remove roles
 $string['forcepayment'] = 'Ignore enrollment deadlines';
 $string['forcepayment_help'] = 'If set, the payment form available via the link during the notification threshold period will be available regardless of the course enrollment start or end dates set. For example, when the course enrollment is already closed, previously enrolled students will be able to continue paying for their tuition.';
 $string['freetrial'] = 'Free trial of training';
-$string['freetrial_desc'] = 'You have a trial period to enrol';
+$string['freetrial_desc'] = 'You have a trial period to enrol ({$a->count} {$a->desc})';
 $string['freetrial_help'] = 'Allows you to open a course once for a certain period of time without payment.';
 $string['freetrialbutton'] = 'Trial enrol';
 $string['managemanualenrolements'] = 'Manage YaFee enrolments';
@@ -108,6 +108,7 @@ $string['uninterrupted_help'] = 'The cost of the break from the last payment is 
 $string['uninterrupted_warn'] = '<font color=red>Works only in payment gateways bePaid, Robokassa, YooKassa!</font>';
 $string['validationerror'] = 'Enrolments can not be enabled without specifying the payment account';
 $string['yafee:config'] = 'Configure enrolment on payment enrol instances';
+$string['yafee:enrol'] = 'Enrol users to course';
 $string['yafee:manage'] = 'Manage enrolled users';
 $string['yafee:unenrol'] = 'Unenrol users from course';
 $string['yafee:unenrolself'] = 'Unenrol self from course';
