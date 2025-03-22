@@ -66,18 +66,18 @@
         <p>{{# str }} paymentrequired {{/ str}}</p>
         <h4>{{cost}}</h4>
 
-{{#freetrial}}
-<h4>{{# str }} freetrial_desc, enrol_yafee {{/ str}} ({{enrolperiod_desc}}): {{enrolperiod}}</h4>
-<form id="freetrial-select" action="{{config.wwwroot}}/enrol/yafee/trial.php" class="freetrial-form" method="POST">
-<button type="submit" id="freetrial" name="freetrial" value="1" class="btn btn-primary btn-enrol_yafee-freetrial">{{# str }} freetrialbutton, enrol_yafee {{/ str }}</button>
-<input type="hidden" class="hidden-inputs" id="instanceid" name="instanceid" value="{{instanceid}}">
-<input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
-</form>
-{{/freetrial}}
-
 {{#uninterrupted}}
  <h5>{{# str }} uninterrupted_desc, enrol_yafee, {{unpaidperiods}} {{/ str}}</h5>
 {{/uninterrupted}}
+
+{{#freetrial}}
+ <h4>{{# str }} freetrial_desc, enrol_yafee, { "count": {{enrolperiod}}, "desc": {{#quote}}{{enrolperiod_desc}}{{/quote}} } {{/ str}}</h4>
+ <form id="freetrial-select" action="{{config.wwwroot}}/enrol/yafee/trial.php" class="freetrial-form" method="POST">
+ <button type="submit" id="freetrial" name="freetrial" value="1" class="btn btn-primary btn-enrol_yafee-freetrial">{{# str }} freetrialbutton, enrol_yafee {{/ str }}</button>
+ <input type="hidden" class="hidden-inputs" id="instanceid" name="instanceid" value="{{instanceid}}">
+ <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
+ </form>
+{{/freetrial}}
 
 {{^freetrial}}
  {{#enrolperiod}}
