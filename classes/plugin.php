@@ -736,7 +736,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         // Check allowed paygws.
         $uninterrupted = false;
-        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa', 'paygw_bank'] as $value) {
+        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa', 'paygw_bank', 'paygw_payanyway'] as $value) {
             if ($plugin = \core_plugin_manager::instance()->get_plugin_info($value)) {
                 if ($plugin->versiondisk > 2025023000) {
                     $uninterrupted = true;
