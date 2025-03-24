@@ -88,7 +88,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         // Foolproof сheck, allowed gateways for uninterrupted payment.
         $surcharge = 0;
         $allowedgateway = false;
-        $gateways = ['bepaid', 'robokassa', 'yookassa', 'bank'];
+        $gateways = ['bepaid', 'robokassa', 'yookassa', 'bank', 'payanyway'];
         if ($payment = $DB->get_record('payments', ['id' => $paymentid])) {
             foreach ($gateways as $value) {
                 if ($payment->gateway == $value) {
