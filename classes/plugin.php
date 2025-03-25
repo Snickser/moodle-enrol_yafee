@@ -984,5 +984,4 @@ class enrol_yafee_plugin extends enrol_plugin {
     public function is_csv_upload_supported(): bool {
         return true;
     }
-
 }
