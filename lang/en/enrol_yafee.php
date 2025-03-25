@@ -105,7 +105,7 @@ $string['thisyear'] = 'This year';
 $string['uninterrupted'] = 'Pay for missed time';
 $string['uninterrupted_desc'] = 'The price for the course is formed taking into account the missed time of the period you have not paid for.';
 $string['uninterrupted_help'] = 'The cost of the break from the last payment is added to the course fee. Only works in courses with a set duration of study.';
-$string['uninterrupted_warn'] = '<font color=red>Works only in payment gateways bePaid, Robokassa, YooKassa!</font>';
+$string['uninterrupted_warn'] = '<font color=red>Works only in payment gateways bePaid, Robokassa, YooKassa, PayAnyWay!</font>';
 $string['validationerror'] = 'Enrolments can not be enabled without specifying the payment account';
 $string['yafee:config'] = 'Configure enrolment on payment enrol instances';
 $string['yafee:enrol'] = 'Enrol users to course';
