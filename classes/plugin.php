@@ -54,6 +54,28 @@ class enrol_yafee_plugin extends enrol_plugin {
     }
 
     /**
+     * Returns localised name of enrol instance
+     *
+     * @param stdClass $instance (null is accepted too)
+     * @return string
+     */
+    public function get_instance_name($instance) {
+        global $DB;
+
+        if (empty($instance->name)) {
+            if (!empty($instance->roleid) and $role = $DB->get_record('role', array('id'=>$instance->roleid))) {
+                $role = ' (' . role_get_name($role, context_course::instance($instance->courseid, IGNORE_MISSING)) . ')';
+            } else {
+                $role = '';
+            }
+            $enrol = $this->get_name();
+            return get_string('pluginname', 'enrol_'.$enrol) . $role;
+        } else {
+            return format_string($instance->name);
+        }
+    }
+
+    /**
      * Returns optional enrolment information icons.
      *
      * This is used in course list for quick overview of enrolment options.
