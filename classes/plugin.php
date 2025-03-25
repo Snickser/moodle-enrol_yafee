@@ -430,7 +430,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         ob_start();
 
-        if (isset($instance->customint3) && !$instance->customint3) {
+        if (isset($instance->customint3) && !$instance->customint3 || $instance->customint3 == 2 && !$force) {
                 return ob_get_clean();
         }
 
@@ -567,6 +567,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'enrolperiod_desc' => $enrolperioddesc,
                 'freetrial' => $freetrial,
                 'sesskey' => sesskey(),
+                'force' => $force,
             ];
             if ($unpaidperiods >= 2) {
                 $template['uninterrupted'] = $instance->customint5;
@@ -633,6 +634,7 @@ class enrol_yafee_plugin extends enrol_plugin {
     protected function get_status_options() {
         $options = [ENROL_INSTANCE_ENABLED  => get_string('yes'),
                          ENROL_INSTANCE_DISABLED => get_string('no')];
+
         return $options;
     }
 
@@ -689,7 +691,12 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'status', get_string('status', 'enrol_yafee'), $options);
         $mform->setDefault('status', $this->get_config('status'));
 
-        $mform->addElement('selectyesno', 'customint3', get_string('newenrols', 'enrol_yafee'));
+        $options = [
+    	    1 => get_string('yes'),
+	    0 => get_string('no'),
+	    2 => get_string('continue'),
+        ];
+        $mform->addElement('select', 'customint3', get_string('newenrols', 'enrol_yafee'), $options);
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 

@@ -50,7 +50,8 @@
         "freetrial": true,
         "sesskey": 234587628,
         "unpaidperiod": "1",
-        "uninterrupted": true
+        "uninterrupted": true,
+        "force": true
     }
 
 }}
@@ -63,7 +64,14 @@
         </div>
     {{/isguestuser}}
     {{^isguestuser}}
+
+{{^force}}
         <p>{{# str }} paymentrequired {{/ str}}</p>
+{{/force}}
+{{#force}}
+        <p>{{# str }} renewenrolment_text, enrol_yafee {{/ str}}</p>
+{{/force}}
+
         <h4>{{cost}}</h4>
 
 {{#uninterrupted}}

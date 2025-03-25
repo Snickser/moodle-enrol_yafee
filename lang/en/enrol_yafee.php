@@ -86,7 +86,7 @@ $string['menunameshort'] = '<font color=red><b>Renew paid subscription</b></font
 $string['messageprovider:expiry_notification'] = 'Self enrolment expiry notifications';
 $string['newenrols'] = 'Allow new self enrolments';
 $string['newenrols_desc'] = 'Allow users to self enrol into new courses by default.';
-$string['newenrols_help'] = 'This setting determines whether a user can self enrol into this course.';
+$string['newenrols_help'] = 'This setting determines whether a user can self enrol into this course, or renew enrolment.';
 $string['nocost'] = 'There is no cost to enrol in this course!';
 $string['paymentaccount'] = 'Payment account';
 $string['paymentaccount_help'] = 'Enrolment fees will be paid to this account.';
@@ -95,6 +95,7 @@ $string['pluginname_desc'] = 'The payment registration method allows you to set 
 $string['privacy:metadata'] = 'The enrolment on payment enrolment plugin does not store any personal data.';
 $string['purchasedescription'] = 'Enrolment in course {$a}';
 $string['renewenrolment'] = 'Renewing a paid subscription';
+$string['renewenrolment_text'] = 'Renewal cost';
 $string['sendexpirynotificationstask'] = 'Fee enrolment send expiry notifications task';
 $string['sendpaymentbutton'] = 'Select payment type';
 $string['showduration'] = 'Show duration of training';
