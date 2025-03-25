@@ -54,6 +54,28 @@ class enrol_yafee_plugin extends enrol_plugin {
     }
 
     /**
+     * Returns localised name of enrol instance
+     *
+     * @param stdClass $instance (null is accepted too)
+     * @return string
+     */
+    public function get_instance_name($instance) {
+        global $DB;
+
+        if (empty($instance->name)) {
+            if (!empty($instance->roleid) && $role = $DB->get_record('role', ['id' => $instance->roleid])) {
+                $role = ' (' . role_get_name($role, context_course::instance($instance->courseid, IGNORE_MISSING)) . ')';
+            } else {
+                $role = '';
+            }
+            $enrol = $this->get_name();
+            return get_string('pluginname', 'enrol_' . $enrol) . $role;
+        } else {
+            return format_string($instance->name);
+        }
+    }
+
+    /**
      * Returns optional enrolment information icons.
      *
      * This is used in course list for quick overview of enrolment options.
@@ -408,7 +430,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         ob_start();
 
-        if (isset($instance->customint3) && !$instance->customint3) {
+        if (isset($instance->customint3) && !$instance->customint3 || $instance->customint3 == 2 && !$force) {
                 return ob_get_clean();
         }
 
@@ -545,6 +567,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'enrolperiod_desc' => $enrolperioddesc,
                 'freetrial' => $freetrial,
                 'sesskey' => sesskey(),
+                'force' => $force,
             ];
             if ($unpaidperiods >= 2) {
                 $template['uninterrupted'] = $instance->customint5;
@@ -611,6 +634,7 @@ class enrol_yafee_plugin extends enrol_plugin {
     protected function get_status_options() {
         $options = [ENROL_INSTANCE_ENABLED  => get_string('yes'),
                          ENROL_INSTANCE_DISABLED => get_string('no')];
+
         return $options;
     }
 
@@ -667,7 +691,12 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'status', get_string('status', 'enrol_yafee'), $options);
         $mform->setDefault('status', $this->get_config('status'));
 
-        $mform->addElement('selectyesno', 'customint3', get_string('newenrols', 'enrol_yafee'));
+        $options = [
+            1 => get_string('yes'),
+        0 => get_string('no'),
+        2 => get_string('continue'),
+        ];
+        $mform->addElement('select', 'customint3', get_string('newenrols', 'enrol_yafee'), $options);
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 
@@ -952,5 +981,14 @@ class enrol_yafee_plugin extends enrol_plugin {
                 );
             }
         }
+    }
+
+    /**
+     * Check if enrolment plugin is supported in csv course upload.
+     *
+     * @return bool
+     */
+    public function is_csv_upload_supported(): bool {
+        return true;
     }
 }
