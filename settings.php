@@ -98,7 +98,9 @@ if ($ADMIN->fulltree) {
     ));
 
     $options = [1 => get_string('yes'),
-                0 => get_string('no')];
+                0 => get_string('no'),
+                2 => get_string('continue'),
+    ];
     $settings->add(new admin_setting_configselect(
         'enrol_yafee/newenrols',
         get_string('newenrols', 'enrol_yafee'),
