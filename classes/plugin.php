@@ -692,9 +692,9 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->setDefault('status', $this->get_config('status'));
 
         $options = [
-    	    1 => get_string('yes'),
-	    0 => get_string('no'),
-	    2 => get_string('continue'),
+            1 => get_string('yes'),
+        0 => get_string('no'),
+        2 => get_string('continue'),
         ];
         $mform->addElement('select', 'customint3', get_string('newenrols', 'enrol_yafee'), $options);
         $mform->setDefault('customint3', true);
