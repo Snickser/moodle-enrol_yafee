@@ -85,5 +85,16 @@ function xmldb_enrol_yafee_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025032601, 'enrol', 'yafee');
     }
 
+    if ($oldversion < 2025032604) {
+        $table = new xmldb_table('enrol_yafee');
+        $field = new xmldb_field('ingroupid');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Savepoint reached.
+        upgrade_plugin_savepoint(true, 2025032604, 'enrol', 'yafee');
+    }
+
     return true;
 }
