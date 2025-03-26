@@ -53,7 +53,8 @@
         "uninterrupted": true,
         "force": true,
 	"groupkey": true,
-	"courseid": 22
+	"courseid": 22,
+	"hide": false
     }
 
 }}
@@ -98,26 +99,42 @@
   <h5>{{# str }} enrolperiodend, enrol_yafee, { "date": {{#quote}}{{dateend}}{{/quote}}, "time": {{#quote}}{{timeend}}{{/quote}} } {{/ str}}</h5>
  {{/timeend}}
 
+</br>
 
 {{^force}}
 {{#groupkey}}
-</br>
+{{#hide}}
+<details open>
+ <summary>{{# str }} groupkeytextforce, enrol_yafee {{/ str }}</summary>
+{{/hide}}
+{{^hide}}
 <details>
- <summary>{{# str }} groupkey_text, enrol_yafee {{/ str }}</summary>
+ <summary>{{# str }} groupkeytext, enrol_yafee {{/ str }}</summary>
+{{/hide}}
+
  <form id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" class="groupkey-form" method="POST">
 {{# str }} password, enrol_self {{/ str }}
  <input type="password" id="password" name="password" value="" autocomplete="off">
- <button type="submit" id="groupkey" name="groupkey" value="1" class="btn btn-secondary btn-enrol_yafee-groupkey">{{# str }} submit {{/ str }}</button>
+
+ <button type="submit" id="groupkey" name="groupkey" value="1" class="btn
+{{^hide}}
+ btn-secondary
+{{/hide}}
+{{#hide}}
+ btn-primary
+{{/hide}}
+ btn-enrol_yafee-groupkey">{{# str }} submit {{/ str }}</button>
+
  <input type="hidden" class="hidden-inputs" id="id" name="id" value="{{instanceid}}">
  <input type="hidden" class="hidden-inputs" id="courseid" name="courseid" value="{{courseid}}">
  <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
  </form>
 </details>
+</br>
 {{/groupkey}}
 {{/force}}
 
-</br>
-
+{{^hide}}
         <button
             class="btn btn-primary"
             type="button"
@@ -132,6 +149,7 @@
         >
             {{# str }} sendpaymentbutton, enrol_yafee {{/ str }}
         </button>
+{{/hide}}
 
 {{/freetrial}}
 

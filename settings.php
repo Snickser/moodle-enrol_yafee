@@ -109,8 +109,8 @@ if ($ADMIN->fulltree) {
         $options
     ));
 
-    $options = [1 => get_string('yes'),
-                0 => get_string('no'),
+    $options = [0 => get_string('no'),
+                1 => get_string('yes'),
                 2 => get_string('force'),
     ];
     $settings->add(new admin_setting_configselect(

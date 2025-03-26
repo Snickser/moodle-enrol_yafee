@@ -564,6 +564,11 @@ class enrol_yafee_plugin extends enrol_plugin {
                 $groupkey = false;
             }
         }
+        // Hide payment button.
+        $hide = false;
+        if ($groupkey == 2 && $groupkey && !$force) {
+            $hide = true;
+        }
 
         $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
         $context = context_course::instance($course->id);
@@ -575,8 +580,9 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
-            'groupkey' => $groupkey,
-            'courseid' => $instance->courseid,
+                'groupkey' => $groupkey,
+                'hide' => $hide,
+                'courseid' => $instance->courseid,
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -721,8 +727,8 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 
         $options = [
-            1 => get_string('yes'),
             0 => get_string('no'),
+            1 => get_string('yes'),
             2 => get_string('force'),
         ];
         $mform->addElement(
