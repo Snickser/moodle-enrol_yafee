@@ -110,8 +110,9 @@ if ($ADMIN->fulltree) {
     ));
 
     $options = [1 => get_string('yes'),
-                0 => get_string('no')];
-                2 => get_string('force')];
+                0 => get_string('no'),
+                2 => get_string('force'),
+    ];
     $settings->add(new admin_setting_configselect(
         'enrol_yafee/groupkey',
         get_string('groupkey', 'enrol_self'),
