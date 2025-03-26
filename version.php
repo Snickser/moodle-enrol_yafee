@@ -17,15 +17,15 @@
 /**
  * Fee enrolment plugin version specification.
  *
- * @package    enrol_yafee
+ * @package   enrol_yafee
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025032501;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2025032601;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2023100400;        // Requires this Moodle version.
 $plugin->component = 'enrol_yafee';     // Full name of the plugin (used for diagnostics).
-$plugin->release   = '1.2';
+$plugin->release   = '1.3';
 $plugin->maturity  = MATURITY_STABLE;

@@ -76,6 +76,7 @@ $string['freetrial'] = 'Бесплатная пробная запись';
 $string['freetrial_desc'] = 'Доступно ознакомительное время ({$a->count} {$a->desc})';
 $string['freetrial_help'] = 'Позволяет пользователю открыть курс один раз на определенный период времени без оплаты.';
 $string['freetrialbutton'] = 'Войти';
+$string['groupkey_text'] = 'Нажмите здесь для ввода пароля от группы, при наличии и необходимости.';
 $string['managemanualenrolements'] = 'Зачисление пользователей YaFee';
 $string['menuname'] = '<font color=red><b>Оплатить курс</b></font>';
 $string['menunameshort'] = '<font color=red><b>Оплатить курс</b></font>';

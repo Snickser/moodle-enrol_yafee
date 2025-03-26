@@ -301,7 +301,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['notifyall']       = $notifyall;
         $fields['expirythreshold'] = $this->get_config('expirythreshold');
         $fields['customint1']      = 0; // Payment account.
-        $fields['customint2']      = 0;
+        $fields['customint2']      = $this->get_config('groupkey');
         $fields['customint3']      = $this->get_config('newenrols');
         $fields['customint4']      = $this->get_config('forcepayment');
         $fields['customint5']      = 0; // Uninterrupt enabler.
@@ -547,6 +547,24 @@ class enrol_yafee_plugin extends enrol_plugin {
             $currency = 'BYN';
         }
 
+        // Check ingroupid.
+        $groupkey = true;
+        if (
+            $ext = $DB->get_records(
+                'enrol_yafee_ext',
+                ['userid' => $USER->id, 'courseid' => $instance->courseid],
+                'id DESC',
+                'ingroupid',
+                0,
+                1,
+            )
+        ) {
+            $ext = reset($ext);
+            if (isset($ext->ingroupid) && $ext->ingroupid) {
+                $groupkey = false;
+            }
+        }
+
         $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
         $context = context_course::instance($course->id);
 
@@ -557,6 +575,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
+            'groupkey' => $groupkey,
+            'courseid' => $instance->courseid,
                 'description' => get_string(
                     'purchasedescription',
                     'enrol_yafee',
@@ -699,6 +719,13 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addElement('select', 'customint3', get_string('newenrols', 'enrol_yafee'), $options);
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
+
+        $mform->addElement(
+            'selectyesno',
+            'customint2',
+            get_string('groupkey', 'enrol_self')
+        );
+        $mform->addHelpButton('customint2', 'groupkey', 'enrol_self');
 
         $accounts = \core_payment\helper::get_payment_accounts_menu($context);
         if ($accounts) {
@@ -875,6 +902,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
             'customint1' => PARAM_INT,
+            'customint2' => PARAM_INT,
             'customint3' => PARAM_INT,
             'customint4' => PARAM_INT,
             'customint5' => PARAM_INT,

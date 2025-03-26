@@ -195,6 +195,23 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $data->userid = $userid;
         $DB->insert_record('enrol_yafee', $data);
 
+        // Add user to group.
+        $ext = $DB->get_records(
+            'enrol_yafee_ext',
+            ['userid' => $userid, 'courseid' => $instance->courseid],
+            'id DESC',
+            'ingroupid',
+            0,
+            1,
+        );
+        $ext = reset($ext);
+        if (isset($ext->ingroupid) && $ext->ingroupid) {
+            global $CFG;
+            require_once($CFG->dirroot . '/group/lib.php');
+            groups_add_member($ext->ingroupid, $userid);
+        }
+        $DB->delete_records('enrol_yafee_ext', ['userid' => $userid, 'courseid' => $instance->courseid]);
+
         return true;
     }
 }

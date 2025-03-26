@@ -27,18 +27,40 @@
 use core_payment\helper;
 
 require_once(__DIR__ . '/../../config.php');
+require_once('lib.php');
+
 global $CFG, $USER, $DB;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$courseid = required_param('courseid', PARAM_INT);
 $id = required_param('id', PARAM_INT);
+$courseid = required_param('courseid', PARAM_INT);
+
+$password = optional_param('password', null, PARAM_TEXT);
+$groupkey = optional_param('groupkey', 0, PARAM_INT);
 
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
+
+// Check and save group password.
+$url = $CFG->wwwroot . '/enrol/index.php?id=' . $course->id;
+if (isset($password) && !empty($password) && $groupkey) {
+    if ($groupid = enrol_yafee_check_group_enrolment_key($course->id, $password)) {
+        $data = new \stdClass();
+        $data->userid = $USER->id;
+        $data->courseid = $courseid;
+        $data->ingroupid = $groupid;
+        $DB->insert_record('enrol_yafee_ext', $data);
+
+        redirect($url, get_string('passwordmatchesgroupkey', 'enrol_self'), 0, 'success');
+    }
+    redirect($url, get_string('passwordinvalid', 'enrol_self'), 0, 'error');
+} else {
+    redirect($url);
+}
 
 // For enrolled users only.
 if (!is_enrolled($context, $USER, '', false)) {

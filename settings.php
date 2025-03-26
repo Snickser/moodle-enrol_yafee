@@ -109,6 +109,16 @@ if ($ADMIN->fulltree) {
         $options
     ));
 
+        $options = [1  => get_string('yes'),
+                             0 => get_string('no')];
+        $settings->add(new admin_setting_configselect(
+            'enrol_yafee/groupkey',
+            get_string('groupkey', 'enrol_self'),
+            get_string('groupkey_desc', 'enrol_self'),
+            0,
+            $options
+        ));
+
     if (!empty($currencies)) {
         $settings->add(new admin_setting_configtext(
             'enrol_yafee/cost',
