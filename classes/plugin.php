@@ -548,7 +548,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         }
 
         // Check ingroupid.
-        $groupkey = true;
+        $groupkey = $instance->customint2;
         if (
             $ext = $DB->get_records(
                 'enrol_yafee_ext',
@@ -713,17 +713,23 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         $options = [
             1 => get_string('yes'),
-        0 => get_string('no'),
-        2 => get_string('continue'),
+            0 => get_string('no'),
+            2 => get_string('continue'),
         ];
         $mform->addElement('select', 'customint3', get_string('newenrols', 'enrol_yafee'), $options);
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 
+        $options = [
+            1 => get_string('yes'),
+            0 => get_string('no'),
+            2 => get_string('force'),
+        ];
         $mform->addElement(
-            'selectyesno',
+            'select',
             'customint2',
-            get_string('groupkey', 'enrol_self')
+            get_string('groupkey', 'enrol_self'),
+            $options
         );
         $mform->addHelpButton('customint2', 'groupkey', 'enrol_self');
 
