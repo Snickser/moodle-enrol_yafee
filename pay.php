@@ -41,13 +41,19 @@ $courseid = required_param('courseid', PARAM_INT);
 $groupkey = optional_param('groupkey', 0, PARAM_INT);
 $password = optional_param('password', null, PARAM_TEXT);
 
+$force = optional_param('force', 0, PARAM_INT);
+
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $id], '*', MUST_EXIST);
 
 // Check group password.
 if ($groupkey) {
-    $url = $CFG->wwwroot . '/enrol/index.php?id=' . $course->id;
+    if ($force) {
+        $url = $CFG->wwwroot . '/enrol/yafee/pay.php?courseid=' . $course->id . '&id=' . $id;
+    } else {
+        $url = $CFG->wwwroot . '/enrol/index.php?id=' . $course->id;
+    }
     if ($groupid = enrol_yafee_check_group_enrolment_key($course->id, $password)) {
         // Save.
         $data = new \stdClass();
@@ -69,11 +75,15 @@ if (!is_enrolled($context, $USER, '', false)) {
 // Set the context of the page.
 $PAGE->set_course($course);
 $PAGE->set_context($context->get_parent_context());
-$PAGE->set_pagelayout('course');
+$PAGE->set_pagelayout('standard');
+
+// Twice set_url.
 $PAGE->set_url('/enrol/index.php', ['id' => $course->id]);
+$PAGE->set_url('/enrol/yafee/pay.php', ['courseid' => $course->id, 'id' => $id]);
+
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_cacheable(false);
-
+$PAGE->set_periodic_refresh_delay(60);
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 

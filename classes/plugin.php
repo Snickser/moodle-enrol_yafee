@@ -579,7 +579,7 @@ class enrol_yafee_plugin extends enrol_plugin {
 
         // Hide payment button.
         $hide = false;
-        if ($groupkey == 2 && !$force) {
+        if ($groupkey == 2) {
             $hide = true;
         }
 
@@ -1044,4 +1044,5 @@ class enrol_yafee_plugin extends enrol_plugin {
     public function is_csv_upload_supported(): bool {
         return true;
     }
+
 }

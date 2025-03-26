@@ -101,7 +101,6 @@
 
 </br>
 
-{{^force}}
 {{#groupkey}}
 {{#hide}}
 <details open>
@@ -112,7 +111,14 @@
  <summary>{{# str }} groupkeytext, enrol_yafee {{/ str }}</summary>
 {{/hide}}
 
- <form id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" class="groupkey-form" method="POST">
+<form id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" class="groupkey-form" method="POST">
+ <input type="hidden" class="hidden-inputs" id="id" name="id" value="{{instanceid}}">
+ <input type="hidden" class="hidden-inputs" id="courseid" name="courseid" value="{{courseid}}">
+ <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
+ <input type="hidden" class="hidden-inputs" id="force" name="force" value="{{force}}">
+
+<div class="mdl-align">
+
 {{# str }} password, enrol_self {{/ str }}
  <input type="password" id="password" name="password" value="" autocomplete="off">
 
@@ -123,16 +129,13 @@
 {{#hide}}
  btn-primary
 {{/hide}}
- btn-enrol_yafee-groupkey">{{# str }} submit {{/ str }}</button>
-
- <input type="hidden" class="hidden-inputs" id="id" name="id" value="{{instanceid}}">
- <input type="hidden" class="hidden-inputs" id="courseid" name="courseid" value="{{courseid}}">
- <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
- </form>
+ btn-enrol_yafee-groupkey" style="width: fit-content;">{{# str }} submit {{/ str }}</button>
+</div>
+</form>
 </details>
 </br>
+</br>
 {{/groupkey}}
-{{/force}}
 
 {{^hide}}
         <button
