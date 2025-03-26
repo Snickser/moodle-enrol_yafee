@@ -564,9 +564,22 @@ class enrol_yafee_plugin extends enrol_plugin {
                 $groupkey = false;
             }
         }
+
+        // Check if user exists in groups.
+        $grc = [];
+        $grs = groups_get_user_groups($instance->courseid, $USER->id, true);
+        foreach ($grs as $gr) {
+            foreach ($gr as $value) {
+                $grc[] = true;
+            }
+        }
+        if (count($grc)) {
+            $groupkey = false;
+        }
+
         // Hide payment button.
         $hide = false;
-        if ($groupkey == 2 && $groupkey && !$force) {
+        if ($groupkey == 2 && !$force) {
             $hide = true;
         }
 
