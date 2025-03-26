@@ -67,5 +67,23 @@ function xmldb_enrol_yafee_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025021605, 'enrol', 'yafee');
     }
 
+    if ($oldversion < 2025032601) {
+        $table = new xmldb_table('enrol_yafee_ext');
+
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('ingroupid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Savepoint reached.
+        upgrade_plugin_savepoint(true, 2025032601, 'enrol', 'yafee');
+    }
+
     return true;
 }

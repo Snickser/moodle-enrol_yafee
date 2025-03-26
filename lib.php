@@ -15,11 +15,37 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Fee enrolment plugin.
+ * YaFee enrolment plugin.
  *
  * This plugin allows you to set up paid courses.
  *
- * @package    enrol_yafee
+ * @package   enrol_yafee
  * @copyright 2024 Alex Orlov <snickser@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+/**
+ * Check if the given password match a group enrolment key in the specified course.
+ *
+ * @param  int $courseid            course id
+ * @param  string $password    group password
+ * @return string                 Groupid if match
+ * @since  Moodle 3.0
+ */
+function enrol_yafee_check_group_enrolment_key($courseid, $password) {
+    global $DB;
+
+    $found = false;
+    $groups = $DB->get_records('groups', ['courseid' => $courseid], 'id ASC', 'id, enrolmentkey');
+
+    foreach ($groups as $group) {
+        if (empty($group->enrolmentkey)) {
+            continue;
+        }
+        if ($group->enrolmentkey === $password) {
+            $found = $group->id;
+            break;
+        }
+    }
+    return $found;
+}
