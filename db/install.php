@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of the bank paymnts module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,17 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Fee enrolment plugin version specification.
+ * enrol_yafee installer script.
  *
- * @package   enrol_yafee
- * @copyright 2024 Alex Orlov <snickser@gmail.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    enrol_yafee
+ * @copyright  2024 Alex Orlov <snickser@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Enabler
+ *
+ * @return boolean
+ */
+function xmldb_enrol_yafee_install() {
 
-$plugin->version   = 2025032701;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2023100400;        // Requires this Moodle version.
-$plugin->component = 'enrol_yafee';     // Full name of the plugin (used for diagnostics).
-$plugin->release   = '1.3';
-$plugin->maturity  = MATURITY_STABLE;
+    $class = \core_plugin_manager::resolve_plugininfo_class('enrol');
+    $class::enable_plugin('yafee', true);
+
+    return true;
+}
