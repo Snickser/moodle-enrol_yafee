@@ -29,9 +29,6 @@
  */
 function xmldb_enrol_yafee_install() {
 
-#    require_once('../config.php');
-#    require_once($CFG->libdir.'/adminlib.php');
-
     $class = \core_plugin_manager::resolve_plugininfo_class('enrol');
     $class::enable_plugin('yafee', true);
 
