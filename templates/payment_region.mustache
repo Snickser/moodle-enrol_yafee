@@ -107,32 +107,32 @@
  <summary>{{# str }} groupkeytextforce, enrol_yafee {{/ str }}</summary>
 {{/hide}}
 {{^hide}}
-<details>
+<details class="mb-3">
  <summary>{{# str }} groupkeytext, enrol_yafee {{/ str }}</summary>
 {{/hide}}
 
-<form class="" id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" method="POST">
+<div class="d-flex mt-2" style="justify-content: center;">
+
+<form class="form-inline" id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" method="POST" autocomplete="off">
  <input type="hidden" class="hidden-inputs" id="id" name="id" value="{{instanceid}}">
  <input type="hidden" class="hidden-inputs" id="courseid" name="courseid" value="{{courseid}}">
  <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
  <input type="hidden" class="hidden-inputs" id="force" name="force" value="{{force}}">
 
-<div class="mdl-align">
 {{# str }} password, enrol_self {{/ str }}
- <input class="ml-2 mr-1" type="password" id="password" name="password" value="" autocomplete="off" focus>
- <button type "submit" id="groupkey" name="groupkey" value="1" class="btn
+&nbsp; <input class="form-control" type="password" id="password" name="password" value="" autocomplete="off" focus>
+&nbsp; <button type "submit" id="groupkey" name="groupkey" value="1" class="form-control btn
 {{^hide}}
  btn-secondary
 {{/hide}}
 {{#hide}}
  btn-primary
 {{/hide}}
- btn-enrol_yafee-groupkey mt-1" style="width: auto;">{{# str }} submit {{/ str }}</button>
-</div>
+ btn-enrol_yafee-groupkey">{{# str }} submit {{/ str }}</button>
 
 </form>
+</div>
 </details>
-</br>
 </br>
 {{/groupkey}}
 
