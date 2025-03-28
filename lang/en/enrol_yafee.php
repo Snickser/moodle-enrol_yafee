@@ -82,6 +82,7 @@ $string['freetrial_help'] = 'Allows you to open a course once for a certain peri
 $string['freetrialbutton'] = 'Trial enrol';
 $string['groupkeytext'] = 'Enter group password';
 $string['groupkeytextforce'] = 'Enter group password';
+$string['groupsuccess'] = 'Group password successfully accepted';
 $string['managemanualenrolements'] = 'Manage YaFee enrolments';
 $string['menuname'] = '<font color=red><b>Renew paid subscription</b></font>';
 $string['menunameshort'] = '<font color=red><b>Renew paid subscription</b></font>';

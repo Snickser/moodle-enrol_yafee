@@ -59,10 +59,11 @@ if ($groupkey) {
         $data = new \stdClass();
         $data->userid = $USER->id;
         $data->courseid = $courseid;
+        $data->instanceid = $id;
         $data->ingroupid = $groupid;
         $DB->insert_record('enrol_yafee_ext', $data);
 
-        redirect($url, get_string('success'), 0, 'success');
+        redirect($url, get_string('groupsuccess', 'enrol_yafee'), 0, 'success');
     }
     redirect($url, get_string('passwordinvalid', 'enrol_self'), 0, 'error');
 }
@@ -83,7 +84,7 @@ $PAGE->set_url('/enrol/yafee/pay.php', ['courseid' => $course->id, 'id' => $id])
 
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_cacheable(false);
-$PAGE->set_periodic_refresh_delay(60);
+$PAGE->set_periodic_refresh_delay(120);
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 
