@@ -84,14 +84,18 @@ $PAGE->set_url('/enrol/yafee/pay.php', ['courseid' => $course->id, 'id' => $id])
 
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_cacheable(false);
+
+// Only for uninterrupted mode.
 if (isset($instance->customint5) && $instance->customint5) {
     $PAGE->set_periodic_refresh_delay(120);
 }
+
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
+$PAGE->set_secondary_navigation(false);
 
 $PAGE->navbar->add(get_string('courses'));
-$PAGE->navbar->add($course->fullname, '/enrol/index.php?id=' . $course->id);
+$PAGE->navbar->add($course->fullname, new moodle_url('/course/view.php', ['id' => $course->id]));
 $PAGE->navbar->add(get_string('pluginname', 'enrol_yafee'));
 
 echo $OUTPUT->header();
