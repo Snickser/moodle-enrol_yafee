@@ -84,7 +84,9 @@ $PAGE->set_url('/enrol/yafee/pay.php', ['courseid' => $course->id, 'id' => $id])
 
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_cacheable(false);
-$PAGE->set_periodic_refresh_delay(120);
+if (isset($instance->customint5) && $instance->customint5) {
+    $PAGE->set_periodic_refresh_delay(120);
+}
 $PAGE->set_title($course->shortname);
 $PAGE->set_heading($course->fullname);
 
