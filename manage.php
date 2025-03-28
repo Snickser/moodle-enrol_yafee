@@ -30,6 +30,7 @@ $roleid       = optional_param('roleid', -1, PARAM_INT);
 $extendperiod = optional_param('extendperiod', 0, PARAM_INT);
 $extendbase   = optional_param('extendbase', 6, PARAM_INT);
 $timeend      = optional_param_array('timeend', [], PARAM_INT);
+$groupid      = optional_param('groupid', false, PARAM_INT);
 
 $instance = $DB->get_record('enrol', ['id' => $enrolid, 'enrol' => 'yafee'], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
@@ -182,6 +183,17 @@ if ($instance->enrolperiod > 0 && !isset($periodmenu[$instance->enrolperiod])) {
     $periodmenu[$instance->enrolperiod] = format_time($instance->enrolperiod);
 }
 
+// Get groups.
+$groups = [false => get_string('no')];
+$grs = groups_get_all_groups($course->id);
+foreach ($grs as $gr) {
+    $groups[$gr->id] = $gr->name;
+}
+// Check groupid.
+if ($groupid && !isset($groups[$groupid])) {
+    $groupid = false;
+}
+
 // Process add and removes.
 if ($canenrol && optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
@@ -202,6 +214,11 @@ if ($canenrol && optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) 
             }
 
             $enrolyafee->enrol_user($instance, $adduser->id, $roleid, $timestart, $timeend);
+
+            // Add to group.
+            if ($groupid) {
+                groups_add_member($groupid, $adduser->id);
+            }
         }
 
         $potentialuserselector->invalidate_selected_users();
@@ -270,7 +287,7 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
                 $currentuserselector->display() ?>
         </td>
       <td id="buttonscell">
-          <div id="addcontrols">
+          <div id="addcontrols" style="margin-top: 6.25rem;">
               <input class="btn btn-secondary" name="add" <?php
                 /**
                  * Fake
@@ -311,6 +328,24 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
                  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
                  */
                 echo html_writer::select($roles, 'roleid', $roleid, false); ?></p>
+              <p><label for="menugroups"><?php
+                /**
+                 * Fake
+                 *
+                 * @package    enrol_yafee
+                 * @copyright 2025 Alex Orlov <snickser@gmail.com>
+                 * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+                 */
+                print_string('addgroup', 'enrol_cohort') ?></label><br />
+              <?php
+                /**
+                 * Fake
+                 *
+                 * @package    enrol_yafee
+                 * @copyright 2025 Alex Orlov <snickser@gmail.com>
+                 * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+                 */
+                echo html_writer::select($groups, 'groupid', $groupid, false); ?></p>
               <p><label for="menuextendperiod"><?php
                 /**
                  * Fake

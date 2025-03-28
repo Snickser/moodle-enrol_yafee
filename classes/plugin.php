@@ -263,7 +263,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             return false;
         }
 
-        if (!has_capability('moodle/course:enrolconfig', $context) || !has_capability('enrol/fee:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) || !has_capability('enrol/yafee:config', $context)) {
             return false;
         }
 
@@ -552,7 +552,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         if (
             $ext = $DB->get_records(
                 'enrol_yafee_ext',
-                ['userid' => $USER->id, 'courseid' => $instance->courseid],
+                ['userid' => $USER->id, 'courseid' => $instance->courseid, 'instanceid' => $instance->id],
                 'id DESC',
                 'ingroupid',
                 0,
@@ -972,7 +972,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      */
     public function can_delete_instance($instance) {
         $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/fee:config', $context);
+        return has_capability('enrol/yafee:config', $context);
     }
 
     /**
@@ -983,7 +983,7 @@ class enrol_yafee_plugin extends enrol_plugin {
      */
     public function can_hide_show_instance($instance) {
         $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/fee:config', $context);
+        return has_capability('enrol/yafee:config', $context);
     }
 
     /**

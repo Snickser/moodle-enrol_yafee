@@ -113,14 +113,14 @@
 
 <div class="d-flex mt-2" style="justify-content: center;">
 
-<form class="form-inline" id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" method="POST" autocomplete="off">
+<form class="form-inline" id="groupkey-select" action="{{config.wwwroot}}/enrol/yafee/pay.php" method="POST">
  <input type="hidden" class="hidden-inputs" id="id" name="id" value="{{instanceid}}">
  <input type="hidden" class="hidden-inputs" id="courseid" name="courseid" value="{{courseid}}">
  <input type="hidden" class="hidden-inputs" id="sesskey" name="sesskey" value="{{sesskey}}">
  <input type="hidden" class="hidden-inputs" id="force" name="force" value="{{force}}">
 
 {{# str }} password, enrol_self {{/ str }}
-&nbsp; <input class="form-control" type="password" id="password" name="password" value="" autocomplete="off" focus>
+&nbsp; <input class="form-control" type="password" id="password" name="password" value="" autocomplete="new-password">
 &nbsp; <button type "submit" id="groupkey" name="groupkey" value="1" class="form-control btn
 {{^hide}}
  btn-secondary
