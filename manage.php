@@ -30,7 +30,7 @@ $roleid       = optional_param('roleid', -1, PARAM_INT);
 $extendperiod = optional_param('extendperiod', 0, PARAM_INT);
 $extendbase   = optional_param('extendbase', 6, PARAM_INT);
 $timeend      = optional_param_array('timeend', [], PARAM_INT);
-$groupid      = optional_param('groupid', null, PARAM_INT);
+$groupid      = optional_param('groupid', false, PARAM_INT);
 
 $instance = $DB->get_record('enrol', ['id' => $enrolid, 'enrol' => 'yafee'], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $instance->courseid], '*', MUST_EXIST);
@@ -184,14 +184,14 @@ if ($instance->enrolperiod > 0 && !isset($periodmenu[$instance->enrolperiod])) {
 }
 
 // Get groups.
-$groups = [0 => get_string('no')];
+$groups = [false => get_string('no')];
 $grs = groups_get_all_groups($course->id);
 foreach ($grs as $gr) {
     $groups[$gr->id] = $gr->name;
 }
 // Check groupid.
-if (!isset($groups[$groupid])) {
-    $groupid = null;
+if ($groupid && !isset($groups[$groupid])) {
+    $groupid = false;
 }
 
 // Process add and removes.
