@@ -798,7 +798,7 @@ class enrol_yafee_plugin extends enrol_plugin {
          'week' => get_string('weeks', 'moodle'),
          'day' => get_string('days', 'moodle'),
          'hour' => get_string('hours', 'moodle'),
-         'minute' => get_string('mins', 'moodle'),
+         'minute' => get_string('minutes', 'moodle'),
         ];
         $trialarray[] =& $mform->createElement(
             'select',
