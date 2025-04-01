@@ -37,6 +37,71 @@ use core_payment\helper;
  */
 class service_provider implements \core_payment\local\callback\service_provider {
     /**
+     * Calculate enrolment cost
+     *
+     * @param stdClass $instance The enrolment instance
+     * @return float
+     */
+    public static function get_uninterrupted_cost($instance): float {
+        global $DB, $USER;
+
+        if ((float) $instance->cost <= 0) {
+            $cost = (float) get_config('enrol_yafee', 'cost');
+        } else {
+            $cost = (float) $instance->cost;
+        }
+
+        if ($data = $DB->get_record('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
+            if ($data->status) {
+                return $cost;
+            }
+        }
+
+        $freetrial = false;
+        if ($instance->customint6 || $instance->customint7) {
+            // Check first time trial.
+            if (
+                $instance->customint6 && !$DB->record_exists('enrol_yafee', ['courseid' => $instance->courseid,
+                    'userid' => $USER->id])
+            ) {
+                    $freetrial = true;
+            }
+
+            // Prepare month and year.
+            $timeend = time();
+            if (isset($data->timeend)) {
+                $timeend = $data->timeend;
+            }
+            $t1 = getdate($timeend);
+            $t2 = getdate(time());
+
+            // Check month and year.
+            if ($instance->customchar1 == 'month' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = ($t2['year'] - $t1['year']) * 12 + $t2['mon'] - $t1['mon'] + 1;
+                    $cost  = $delta * $cost;
+                }
+            } else if ($instance->customchar1 == 'year' && $instance->customint7 > 0 && !$freetrial) {
+                if ($instance->customint5) {
+                    $delta = $t2['year'] - $t1['year'] + 1;
+                    $cost  = $delta * $cost;
+                }
+            }
+        }
+
+        if (isset($data->timeend) || isset($data->timestart)) {
+            if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
+                $price = $cost / $instance->enrolperiod;
+                $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0) * $instance->enrolperiod +
+                $data->timestart - $data->timeend;
+                $cost  = $delta * $price;
+            }
+        }
+
+        return $cost;
+    }
+
+    /**
      * Callback function that returns the enrolment cost and the accountid
      * for the course that $instanceid enrolment instance belongs to.
      *
@@ -49,7 +114,9 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $instance = $DB->get_record('enrol', ['enrol' => 'yafee', 'id' => $instanceid], '*', MUST_EXIST);
 
-        return new \core_payment\local\entities\payable($instance->cost, $instance->currency, $instance->customint1);
+        $cost = self::get_uninterrupted_cost($instance);
+
+        return new \core_payment\local\entities\payable($cost, $instance->currency, $instance->customint1);
     }
 
     /**
