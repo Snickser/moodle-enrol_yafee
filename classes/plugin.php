@@ -819,7 +819,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $uninterrupted = false;
         foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa', 'paygw_bank', 'paygw_payanyway'] as $value) {
             if ($plugin = \core_plugin_manager::instance()->get_plugin_info($value)) {
-                if ($plugin->versiondisk > 2025023000) {
+                if ($plugin->versiondisk > 2025033100) {
                     $uninterrupted = true;
                 }
             }
@@ -828,8 +828,8 @@ class enrol_yafee_plugin extends enrol_plugin {
             $mform->addElement(
                 'advcheckbox',
                 'customint5',
+                '',
                 get_string('uninterrupted', 'enrol_yafee'),
-                get_string('uninterrupted_warn', 'enrol_yafee')
             );
             $mform->setType('customint5', PARAM_INT);
             $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
