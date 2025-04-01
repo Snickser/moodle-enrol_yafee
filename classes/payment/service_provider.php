@@ -172,8 +172,8 @@ class service_provider implements \core_payment\local\callback\service_provider 
                 $timeend = $userdata->timeend;
                 // Unset uninterrupted mode.
                 $instance->customint5 = 0;
-*/
             }
+*/
         }
 
         // Check peroids.
