@@ -46,7 +46,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         global $DB, $USER;
 
         if ((float) $instance->cost <= 0) {
-            $cost = (float) $this->get_config('cost');
+            $cost = (float) get_config('enrol_yafee', 'cost');
         } else {
             $cost = (float) $instance->cost;
         }
