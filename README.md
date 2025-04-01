@@ -16,7 +16,7 @@ This plugin contains the following features on top of the core payment plugin:
 * Can show enrolment duration on page.
 * Free trial enrolment option.
 * Renew enrolment duration by paying again using the link in the navigation menu when it's about to expire.
-* Payment for missed unpaid time. The full unpaid cost is displayed only when using paygw_bepaid, paygw_robokassa, paygw_yookassa. In other payment gateways this mode will require making several consecutive payments.
+* Payment for missed unpaid time.
 * Manual enrol and unenrol users.
 * Uses group enrolment keys.
 
