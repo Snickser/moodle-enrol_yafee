@@ -93,7 +93,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
             if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
                 $price = $cost / $instance->enrolperiod;
                 $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0) * $instance->enrolperiod +
-                $data->timestart - $data->timeend;
+            	    $data->timestart - $data->timeend;
                 $cost  = $delta * $price;
             }
         }
@@ -152,18 +152,9 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $timestart = time();
         $timeend   = $timestart;
 
-        // Foolproof сheck, allowed gateways for uninterrupted payment.
         $surcharge = 0;
-        $allowedgateway = false;
-        $gateways = ['bepaid', 'robokassa', 'yookassa', 'bank', 'payanyway'];
         if ($payment = $DB->get_record('payments', ['id' => $paymentid])) {
-            foreach ($gateways as $value) {
-                if ($payment->gateway == $value) {
-                    $allowedgateway = true;
-                    break;
-                }
-            }
-            $surcharge = helper::get_gateway_surcharge($payment->gateway);
+    	    $surcharge = helper::get_gateway_surcharge($payment->gateway);
         }
 
         // Get time data.
@@ -176,11 +167,12 @@ class service_provider implements \core_payment\local\callback\service_provider 
             if ($userdata->timeend > time()) {
                 $timeend = $userdata->timeend;
             }
-            // Append if not allowed gateway in uninterrupted mode.
+/*            // Append if not allowed gateway in uninterrupted mode.
             if ($instance->customint5 && !$allowedgateway) {
                 $timeend = $userdata->timeend;
                 // Unset uninterrupted mode.
                 $instance->customint5 = 0;
+*/
             }
         }
 
