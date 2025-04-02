@@ -167,13 +167,6 @@ class service_provider implements \core_payment\local\callback\service_provider 
             if ($userdata->timeend > time()) {
                 $timeend = $userdata->timeend;
             }
-/*            // Append if not allowed gateway in uninterrupted mode.
-            if ($instance->customint5 && !$allowedgateway) {
-                $timeend = $userdata->timeend;
-                // Unset uninterrupted mode.
-                $instance->customint5 = 0;
-            }
-*/
         }
 
         // Check peroids.
