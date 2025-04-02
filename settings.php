@@ -169,6 +169,13 @@ if ($ADMIN->fulltree) {
     ));
 
     $settings->add(new admin_setting_configcheckbox(
+        'enrol_yafee/uninterrupted',
+        get_string('uninterrupted', 'enrol_yafee'),
+        get_string('uninterrupted', 'enrol_yafee'),
+        0
+    ));
+
+    $settings->add(new admin_setting_configcheckbox(
         'enrol_yafee/showduration',
         get_string('showduration', 'enrol_yafee'),
         get_string('showduration', 'enrol_yafee'),

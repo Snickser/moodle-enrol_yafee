@@ -93,7 +93,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
             if ($instance->customint5 && $instance->enrolperiod && $data->timeend < time() && $data->timestart) {
                 $price = $cost / $instance->enrolperiod;
                 $delta = ceil(((time() - $data->timestart) / $instance->enrolperiod) + 0) * $instance->enrolperiod +
-            	    $data->timestart - $data->timeend;
+                    $data->timestart - $data->timeend;
                 $cost  = $delta * $price;
             }
         }
@@ -154,7 +154,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $surcharge = 0;
         if ($payment = $DB->get_record('payments', ['id' => $paymentid])) {
-    	    $surcharge = helper::get_gateway_surcharge($payment->gateway);
+            $surcharge = helper::get_gateway_surcharge($payment->gateway);
         }
 
         // Get time data.
