@@ -40,10 +40,15 @@ if ($ADMIN->fulltree) {
     $donate = get_string('donate', 'enrol_yafee', $plugininfo);
 
     $settings->add(new admin_setting_heading(
-        'enrol_yafee_settings',
+        'enrol_yafee_donate',
         '',
-        $donate .
-        get_string('pluginname_desc', 'enrol_yafee'),
+        $donate
+    ));
+
+    $settings->add(new admin_setting_heading(
+        'enrol_yafee_settings',
+        ' ',
+        get_string('pluginname_desc', 'enrol_yafee')
     ));
 
     // Note: let's reuse the ext sync constants and strings here, internally it is very similar,
@@ -165,6 +170,13 @@ if ($ADMIN->fulltree) {
         get_string('enrolperiod', 'core_enrol'),
         get_string('enrolperiod_desc', 'enrol_yafee'),
         0,
+        0
+    ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'enrol_yafee/uninterrupted',
+        get_string('uninterrupted', 'enrol_yafee'),
+        get_string('uninterrupted_help', 'enrol_yafee'),
         0
     ));
 

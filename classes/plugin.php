@@ -798,7 +798,7 @@ class enrol_yafee_plugin extends enrol_plugin {
          'week' => get_string('weeks', 'moodle'),
          'day' => get_string('days', 'moodle'),
          'hour' => get_string('hours', 'moodle'),
-         'minute' => get_string('mins', 'moodle'),
+         'minute' => get_string('minutes', 'moodle'),
         ];
         $trialarray[] =& $mform->createElement(
             'select',
@@ -815,26 +815,15 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->addHelpButton('duration', 'enrolperiod', 'enrol_yafee');
         $mform->DisabledIf('duration', 'trialenabled', "eq", 0);
 
-        // Check allowed paygws.
-        $uninterrupted = false;
-        foreach (['paygw_bepaid', 'paygw_robokassa', 'paygw_yookassa', 'paygw_bank', 'paygw_payanyway'] as $value) {
-            if ($plugin = \core_plugin_manager::instance()->get_plugin_info($value)) {
-                if ($plugin->versiondisk > 2025033100) {
-                    $uninterrupted = true;
-                }
-            }
-        }
-        if ($uninterrupted) {
-            $mform->addElement(
-                'advcheckbox',
-                'customint5',
-                '',
-                get_string('uninterrupted', 'enrol_yafee'),
-            );
-            $mform->setType('customint5', PARAM_INT);
-            $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
-            $mform->DisabledIf('customint5', 'trialenabled', "eq", 0);
-        }
+        $mform->addElement(
+            'advcheckbox',
+            'customint5',
+            '',
+            get_string('uninterrupted', 'enrol_yafee'),
+        );
+        $mform->setType('customint5', PARAM_INT);
+        $mform->addHelpButton('customint5', 'uninterrupted', 'enrol_yafee');
+        $mform->DisabledIf('customint5', 'trialenabled', "eq", 0);
 
         $mform->addElement(
             'advcheckbox',
