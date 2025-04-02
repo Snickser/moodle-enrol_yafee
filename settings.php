@@ -176,7 +176,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox(
         'enrol_yafee/uninterrupted',
         get_string('uninterrupted', 'enrol_yafee'),
-        get_string('uninterrupted', 'enrol_yafee'),
+        get_string('uninterrupted_help', 'enrol_yafee'),
         0
     ));
 
