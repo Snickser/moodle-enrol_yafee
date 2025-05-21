@@ -304,7 +304,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['customint2']      = $this->get_config('groupkey');
         $fields['customint3']      = $this->get_config('newenrols');
         $fields['customint4']      = $this->get_config('forcepayment');
-        $fields['customint5']      = 0; // Uninterrupt enabler.
+        $fields['customint5']      = $this->get_config('uninterrupted');
         $fields['customint6']      = $this->get_config('freetrial');
         $fields['customint7']      = 0; // Number periods of customchar1.
         $fields['customint8']      = $this->get_config('showduration');
@@ -488,6 +488,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $cost  = $delta * $cost;
                     $unpaidperiods = $delta;
                     $timeend = strtotime('+' . $delta . 'month', $timeend);
+                } else {
+                    $timeend = strtotime('+' . $instance->customint7 . 'month', $timeend);
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('months');
@@ -497,6 +499,8 @@ class enrol_yafee_plugin extends enrol_plugin {
                     $cost  = $delta * $cost;
                     $unpaidperiods = $delta;
                     $timeend = strtotime('+' . $delta . 'year', $timeend);
+                } else {
+                    $timeend = strtotime('+' . $instance->customint7 . 'year', $timeend);
                 }
                 $enrolperiod = $instance->customint7;
                 $enrolperioddesc = get_string('years');
