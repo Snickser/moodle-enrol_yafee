@@ -744,7 +744,6 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 
-
         $accounts = \core_payment\helper::get_payment_accounts_menu($context);
         if ($accounts) {
             $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
