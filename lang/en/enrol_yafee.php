@@ -27,6 +27,7 @@ $string['assignrole'] = 'Assign role';
 $string['cost'] = 'Enrolment fee';
 $string['costerror'] = 'The enrolment fee must be a number and greater than zero.';
 $string['currency'] = 'Currency';
+$string['defaultgroup'] = 'Default group';
 $string['defaultrole'] = 'Default role assignment';
 $string['defaultrole_desc'] = 'Select the role to assign to users after making a payment.';
 $string['donate'] = '<div>Plugin version: {$a->release} ({$a->versiondisk})<br>
