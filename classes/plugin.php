@@ -309,6 +309,7 @@ class enrol_yafee_plugin extends enrol_plugin {
         $fields['customint7']      = 0; // Number periods of customchar1.
         $fields['customint8']      = $this->get_config('showduration');
         $fields['customchar1']     = 'minute'; // Types of periods.
+        $fields['customtext1']     = ''; // Default group.
 
         return $fields;
     }
@@ -743,19 +744,6 @@ class enrol_yafee_plugin extends enrol_plugin {
         $mform->setDefault('customint3', true);
         $mform->addHelpButton('customint3', 'newenrols', 'enrol_yafee');
 
-        $options = [
-            0 => get_string('no'),
-            1 => get_string('yes'),
-            2 => get_string('force'),
-        ];
-        $mform->addElement(
-            'select',
-            'customint2',
-            get_string('groupkey', 'enrol_self'),
-            $options
-        );
-        $mform->addHelpButton('customint2', 'groupkey', 'enrol_self');
-
         $accounts = \core_payment\helper::get_payment_accounts_menu($context);
         if ($accounts) {
             $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
@@ -779,6 +767,33 @@ class enrol_yafee_plugin extends enrol_plugin {
         $supportedcurrencies = $this->get_possible_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'enrol_yafee'), $supportedcurrencies);
         $mform->setDefault('currency', $this->get_config('currency'));
+
+        $options = [
+            0 => get_string('no'),
+            1 => get_string('yes'),
+            2 => get_string('force'),
+        ];
+        $mform->addElement(
+            'select',
+            'customint2',
+            get_string('groupkey', 'enrol_self'),
+            $options
+        );
+        $mform->addHelpButton('customint2', 'groupkey', 'enrol_self');
+
+        $options = [
+            0 => get_string('no'),
+        ];
+        $grs = groups_get_all_groups($instance->courseid);
+        foreach ($grs as $gr) {
+            $options[$gr->id] = $gr->name;
+        }
+        $mform->addElement(
+            'select',
+            'customtext1',
+            get_string('defaultgroup', 'enrol_yafee'),
+            $options
+        );
 
         $roles = $this->get_roleid_options($instance, $context);
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_yafee'), $roles);
@@ -928,6 +943,7 @@ class enrol_yafee_plugin extends enrol_plugin {
             'customint7' => PARAM_INT,
             'customint8' => PARAM_INT,
             'customchar1' => PARAM_TEXT,
+            'customtext1' => PARAM_TEXT,
         ];
         if ($data['expirynotify'] != 0) {
             $tovalidate['expirythreshold'] = PARAM_INT;

@@ -261,6 +261,10 @@ class service_provider implements \core_payment\local\callback\service_provider 
             global $CFG;
             require_once($CFG->dirroot . '/group/lib.php');
             groups_add_member($ext->ingroupid, $userid);
+        } else if (isset($instance->customtext1) && (int)$instance->customtext1 > 0) {
+            global $CFG;
+            require_once($CFG->dirroot . '/group/lib.php');
+            groups_add_member((int)$instance->customtext1, $userid);
         }
         $DB->delete_records('enrol_yafee_ext', ['userid' => $userid, 'courseid' => $instance->courseid]);
 

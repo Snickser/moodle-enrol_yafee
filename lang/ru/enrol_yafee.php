@@ -27,6 +27,7 @@ $string['assignrole'] = 'Назначить роль';
 $string['cost'] = 'Оплата за зачисление';
 $string['costerror'] = 'Стоимость должна быть указана в виде числа больше ноля, и максимум два знака в дробной части.';
 $string['currency'] = 'Валюта';
+$string['defaultgroup'] = 'Группа по умолчанию';
 $string['defaultrole'] = 'Роль по умолчанию';
 $string['defaultrole_desc'] = 'Выберите роль, которая будет назначена самостоятельно записанным пользователям';
 $string['donate'] = '<div>Версия плагина: {$a->release} ({$a->versiondisk})<br>
