@@ -40,6 +40,7 @@
     {
         "cost": "$108.50",
         "instanceid": 11,
+        "instancename": "YaFee",
         "description": "Enrolment in course Introduction to algorithms",
         "successurl": "https://moodlesite/course/view.php?id=2",
         "isguestuser": false,
@@ -58,10 +59,30 @@
     }
 
 }}
+<div class="mform">
+
+  <div class="position-relative d-flex ftoggler align-items-center position-relative mr-1" id="heading1">
+	<a data-toggle="collapse" href="#collapse1" role="button" aria-expanded="true" aria-controls="collapse1" class="btn btn-icon mr-1 icons-collapse-expand stretched-link fheader">
+                <span class="expanded-icon icon-no-margin p-2" title="Свернуть">
+                    <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true"></i>
+                </span>
+                <span class="collapsed-icon icon-no-margin p-2" title="Развернуть">
+                    <span class="dir-rtl-hide"><i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i></span>
+                    <span class="dir-ltr-hide"><i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i></span>
+                </span>
+        </a>
+	<h3 class="d-flex align-self-stretch align-items-center mb-0" aria-hidden="true">{{instancename}}</h3>
+  </div>
+
+  <div id="collapse1" class="collapse show" aria-labelledby="heading1">
+    <div class="card-body">
+
+
+
 <div class="enrol_yafee_payment_region text-center">
     {{#isguestuser}}
         <div class="mdl-align">
-            <p>{{# str }} paymentrequired {{/ str}}</p>
+            <p>{{# str }} paymentrequired, enrol_yafee {{/ str}}</p>
             <p><b>{{cost}}</b></p>
             <p><a href="{{config.wwwroot}}/login/">{{# str }} loginsite {{/ str }}</a></p>
         </div>
@@ -69,7 +90,7 @@
     {{^isguestuser}}
 
 {{^force}}
-        <p>{{# str }} paymentrequired {{/ str}}</p>
+        <p>{{# str }} paymentrequired, enrol_yafee {{/ str}}</p>
 {{/force}}
 {{#force}}
         <p>{{# str }} renewenrolment_text, enrol_yafee {{/ str}}</p>
@@ -110,6 +131,8 @@
 <details class="mb-3">
  <summary>{{# str }} groupkeytext, enrol_yafee {{/ str }}</summary>
 {{/hide}}
+
+
 
 <div class="d-flex mt-2" style="justify-content: center;">
 
@@ -158,6 +181,13 @@
 {{/isguestuser}}
 
 </div>
+
+    </div>
+  </div>
+
+</div>
+
+<hr>
 
 {{#js}}
     require(['core_payment/gateways_modal'], function(modal) {

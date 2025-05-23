@@ -94,6 +94,7 @@ $string['newenrols_help'] = 'This setting determines whether a user can self enr
 $string['nocost'] = 'There is no cost to enrol in this course!';
 $string['paymentaccount'] = 'Payment account';
 $string['paymentaccount_help'] = 'Enrolment fees will be paid to this account.';
+$string['paymentrequired'] = 'This course requires a payment for entry.';
 $string['pluginname'] = 'Yet another Enrolment on payment';
 $string['pluginname_desc'] = 'The payment registration method allows you to set up courses that require payment. There is a sitewide fee, which you set here as the default fee for the entire site, and then course settings, which you can set for each course individually. The course fee overrides the site fee.';
 $string['privacy:metadata'] = 'The enrolment on payment enrolment plugin does not store any personal data.';

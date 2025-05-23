@@ -598,6 +598,7 @@ class enrol_yafee_plugin extends enrol_plugin {
                 'isguestuser' => isguestuser() || !isloggedin(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $currency),
                 'instanceid' => $instance->id,
+                'instancename' => $instance->name,
                 'groupkey' => $groupkey,
                 'hide' => $hide,
                 'courseid' => $instance->courseid,
